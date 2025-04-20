@@ -21,7 +21,7 @@ $tgdb_array = [
 '2327' => 'OE7 Tirol',
 '23271' => 'OE7 Tirol regional',
 '2328' => 'OE8 Kärnten',
-'23281' => 'OE8 Kärnten regional'
+'23281' => 'OE8 Kärnten regional',
 '2329' => 'OE9 Vorarlberg',
 '23291' => 'OE9 Vorarlberg regional',
 ];
