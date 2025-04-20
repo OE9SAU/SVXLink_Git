@@ -2,6 +2,8 @@
 
 cd /var/www/html/include
 
+cp tgdb.php tgdb.php_back
+
 rm tgdb.php
 
 wget https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/tgdb.txt
