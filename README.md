@@ -1,3 +1,3 @@
 Replace or copy the "tgdb_update.sh" into your "/var/www/html/include" directory and startup the script with "./tgdb_update.sh".
 
-This script overwrites the selectable and monitorable talkgroups for SVXLink Austria.
+The script will overwrites the old TG-list and add all selectable and monitorable talkgroups for SVXLink Austria.
