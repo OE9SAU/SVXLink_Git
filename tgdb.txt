@@ -1,6 +1,6 @@
 <?php
 /* talkgroup / number alias database */
-/* last update: 20.04.2025 from OE9XFP
+/* last update: 28.04.2025 from OE9XFP
 /* (C) 2022 by Heiko, DL1BZ */
 $tgdb_array = [ 
 '20' => 'Test TG',
@@ -24,5 +24,6 @@ $tgdb_array = [
 '23281' => 'OE8 Kärnten regional',
 '2329' => 'OE9 Vorarlberg',
 '23291' => 'OE9 Vorarlberg regional',
+'232951' => 'OE9 Vorarlberg intern',
 ];
 ?>
