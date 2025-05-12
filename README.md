@@ -9,4 +9,4 @@ Use this so send APRSData to APRS-server for your SHARI position (use for mobile
 
 v1.0 only USB GPS-Mouse
 
-v1.1 select fixed LAT&LON, GPS-Mosue over USB or serial GPIO 
+v1.1 select fixed LAT&LON or GPS-Mouse over USB or GPS-Mouse over RX-UART-GPIO 
