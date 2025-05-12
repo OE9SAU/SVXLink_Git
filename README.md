@@ -6,3 +6,5 @@ The script will overwrites the old TG-list and add all selectable and monitorabl
 ***shari_goes_aprs:***
 
 Use this so send APRSData to APRS-server for your SHARI position (use for mobile HS)
+v1.0 only USB GPS-Mouse
+v1.1 select fixed LAT&LON, USB or serial GPIO
