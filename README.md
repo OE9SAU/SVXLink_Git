@@ -6,7 +6,7 @@ The script will overwrites the old TG-list and add all selectable and monitorabl
 
 **shari_goes_aprs:**
 
-Use this script so send position data to APRS-Server for your SHARI position (use for mobile HS) via ncat
+Script that sends your position data to an APRS server for your SHARI position, using ncat to transmit the data.
 
 sudo apt install ncat
 
