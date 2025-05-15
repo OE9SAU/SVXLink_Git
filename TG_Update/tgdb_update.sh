@@ -8,7 +8,7 @@ cp tgdb.php tgdb.php_back
 
 rm tgdb.php
 
-wget https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/tgdb.txt
+wget https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/TG_Update/tgdb.txt
 
 cp /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.php
 
