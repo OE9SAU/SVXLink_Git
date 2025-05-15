@@ -53,7 +53,7 @@ def read_gps_data():
             print("Fehler: LATITUDE oder LONGITUDE fehlen in der Konfigurationsdatei.")
             return None, None, None, None
 
-    if gps_source == 'usb':
+    if gps_source == 'usb' or gps_source == 'gpio':
         ser = serial.Serial(gps_device, baudrate=gps_baudrate, timeout=gps_timeout)
         latitude = longitude = altitude = speed_kmh = None
         start_time = time.time()
@@ -91,7 +91,6 @@ def read_gps_data():
         ser.close()
         return None, None, None, None
 
-    # Fallback, wenn keine Quelle angegeben ist
     print("Fehler: Ungültige GPS-Quelle.")
     return None, None, None, None
 
