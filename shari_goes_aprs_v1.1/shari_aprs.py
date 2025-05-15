@@ -27,6 +27,7 @@ gps_source = config['GPS']['gps_source'].lower()  # Quelle für GPS (usb, gpio, 
 gps_device = config['GPS'].get('DEVICE', '/dev/ttyACM0')  # Standard für USB, falls nicht gesetzt
 gps_baudrate = int(config['GPS'].get('BAUDRATE', 9600))
 gps_timeout = int(config['GPS'].get('TIMEOUT', 10))
+print(f"GPS-Quelle: '{gps_source}'")
 
 # Beacon-Konfiguration
 send_interval = int(config['BEACON']['SEND_INTERVAL'])
@@ -61,7 +62,7 @@ def read_gps_data():
         while time.time() - start_time < gps_timeout:
             line = ser.readline().decode('ascii', errors='replace').strip()
 
-            if line.startswith('$GPGGA'):
+            if line.startswith('$GPGGA') or line.startswith('$GNGGA'):
                 parts = line.split(',')
                 try:
                     if parts[2] and parts[4]:
@@ -72,7 +73,7 @@ def read_gps_data():
                 except (ValueError, IndexError):
                     continue
 
-            elif line.startswith('$GPRMC'):
+            elif line.startswith('$GPRMC') or line.startswith('$GNRMC'):
                 parts = line.split(',')
                 try:
                     if parts[3] and parts[5]:
