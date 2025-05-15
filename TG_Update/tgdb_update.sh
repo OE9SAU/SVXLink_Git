@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo systemctl stop svxlink
+
 cd /var/www/html/include
 
 cp tgdb.php tgdb.php_back
@@ -14,3 +16,5 @@ chown svxlink:svxlink /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.
 chmod 755 /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.php 
 
 rm tgdb.txt
+
+sudo systemctl start svxlink
