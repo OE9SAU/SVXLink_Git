@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo systemctl stop svxlink
+systemctl stop svxlink
 
 cd /var/www/html/include
 
@@ -17,4 +17,4 @@ chmod 755 /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.php
 
 rm tgdb.txt
 
-sudo systemctl start svxlink
+systemctl start svxlink
