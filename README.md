@@ -9,6 +9,7 @@ In case of permission problems:
 sudo chmod +x tgdb_update.sh && sudo ./tgdb_update.sh
 
 
+
 **shari_goes_aprs:**
 
 Script that sends your position data to an APRS server for your SHARI position, using ncat to transmit the data.
