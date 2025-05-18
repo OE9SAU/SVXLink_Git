@@ -5,6 +5,7 @@ The script will overwrites the old TG-list and add all selectable and monitorabl
 
 
 In case of permission problems:
+
 sudo chmod +x tgdb_update.sh
 
 sudo ./tgdb_update.sh
