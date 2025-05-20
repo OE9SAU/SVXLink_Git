@@ -56,8 +56,8 @@ textarea {
 
 </style>
 </head>
-<body style = "background-color: #e1e1e1;font: 11pt arial, sans-serif;">
-<fieldset style = "border:#3083b8 2px groove;box-shadow:5px 5px 20px #999; background-color:#f1f1f1; width:555px;margin-top:15px;margin-left:0px;margin-right:5px;font-size:13px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+<body style = "background-color: #f1f1f1;font: 11pt arial, sans-serif;">
+<fieldset style = "border:#3083b8 2px groove;box-shadow:5px 5px 5px #999; background-color:#e1e1e1;width:555px;margin-top:-25px;margin-left:0px;margin-right:5px;font-size:13px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
 <div style = "padding:0px;width:550px;background-image: linear-gradient(to bottom, #e9e9e9 50%, #bcbaba 100%);border-radius: 10px;-moz-border-radius:10px;-webkit-border-radius:10px;border: 1px solid LightGrey;margin-left:0px; margin-right:0px;margin-top:4px;margin-bottom:0px;line-height:1.6;white-space:normal;">
 <h1 id="web-audio-peak-meters" style = "color:#00aee8;font: 18pt arial, sans-serif;font-weight:bold; text-shadow: 0.25px 0.25px gray;">WiFi Configurator</h1>
 
@@ -87,8 +87,8 @@ if (isset($_POST['btnScan']))
     {
         $retval = null;
 	$screen = null;
-	exec('sudo /usr/bin/nmcli dev wifi rescan');
-	exec('sudo /usr/bin/nmcli dev wifi list 2>&1',$screen,$retval);
+	exec('sudo nmcli dev wifi rescan');
+	exec('sudo nmcli dev wifi list 2>&1',$screen,$retval);
 	//$screen[$screen.length]="\n";
 	$screen[$screen.$length]="Keep in mind the non-standard WIFI antenna.";
 }
@@ -98,8 +98,8 @@ if (isset($_POST['btnConnList']))
         
 	$retval = null;
 	$screen = null;
-	//exec('sudo /usr/bin/nmcli dev wifi rescan');
-        exec('sudo /usr/bin/nmcli con show --order type 2>&1',$screen,$retval);
+	//exec('nmcli dev wifi rescan');
+        exec('sudo nmcli con show --order type 2>&1',$screen,$retval);
 }
 
 if (isset($_POST['btnSwitch']))
@@ -108,8 +108,8 @@ if (isset($_POST['btnSwitch']))
         $retval = null;
         $screen = null;
         $ssid = $_POST['ssid'];
-	//exec('sudo /usr/bin/nmcli dev wifi rescan');
-        $command = "sudo /usr/bin/nmcli dev wifi connect \"" .$ssid. "\" 2>&1"; 
+	//exec('nmcli dev wifi rescan');
+        $command = "sudo nmcli dev wifi connect \"" .$ssid. "\" 2>&1"; 
 	exec($command,$screen,$retval);
 }
 
@@ -119,22 +119,27 @@ if (isset($_POST['btnDelete']))
         $retval = null;
         $screen = null;
         $ssid = $_POST['ssid'];
-        //exec('sudo /usr/bin/nmcli dev wifi rescan');
-        $command = "sudo /usr/bin/nmcli con delete \"" .$ssid. "\" 2>&1";
+        //exec('nmcli dev wifi rescan');
+        $command = "sudo nmcli con delete \"" .$ssid. "\" 2>&1";
         exec($command,$screen,$retval);
 }
 
-if (isset($_POST['btnAdd']))
-    {
+if (isset($_POST['btnAdd'])) {
+    $retval = null;
+    $screen = null;
+    $ssid = $_POST['ssid'];
+    $password = $_POST['password'];
 
-        $retval = null;
-        $screen = null;
-        $ssid = $_POST['ssid'];
-        $password = $_POST['password'];
-	//exec('sudo /usr/bin/nmcli dev wifi rescan');
-        $command = "sudo /usr/bin/nmcli dev wifi connect \"" .$ssid. "\" password  \"" . $password . "\"  2>&1";
-        exec($command,$screen,$retval);
+    $command = "sudo /usr/bin/nmcli connection add type wifi con-name \"" . $ssid . "\" ssid \"" . $ssid . "\" 2>&1";
+    exec($command, $screen, $retval);
+
+    $command = "sudo /usr/bin/nmcli connection modify \"" . $ssid . "\" wifi-sec.key-mgmt wpa-psk 2>&1";
+    exec($command, $screen, $retval);
+
+    $command = "sudo /usr/bin/nmcli connection modify \"" . $ssid . "\" wifi-sec.psk \"" . $password . "\" 2>&1";
+    exec($command, $screen, $retval);
 }
+
 
 if (isset($_POST['btnWifiStatus']))
     {
@@ -143,8 +148,8 @@ if (isset($_POST['btnWifiStatus']))
         $screen = null;
         //$ssid = $_POST['ssid'];
         //$password = $_POST['password'];
-        //exec('sudo /usr/bin/nmcli dev wifi rescan');
-        $command = 'sudo /usr/bin/nmcli radio 2>&1';
+        //exec('nmcli dev wifi rescan');
+        $command = 'sudo nmcli radio 2>&1';
         exec($command,$screen,$retval);
 }
 
@@ -156,10 +161,10 @@ if (isset($_POST['btnWifiOn']))
         $screen = null;
         //$ssid = $_POST['ssid'];
         //$password = $_POST['password'];
-        //exec('sudo /usr/bin/nmcli dev wifi rescan');
-        $command = 'sudo /usr/bin/nmcli radio wifi on 2>&1';
+        //exec('nmcli dev wifi rescan');
+        $command = 'sudo nmcli radio wifi on 2>&1';
         exec($command,$screen,$retval);
-	$command = 'sudo /usr/bin/nmcli radio wifi 2>&1';
+	$command = 'sudo nmcli radio wifi 2>&1';
         exec($command,$screen,$retval);
 
 
@@ -177,7 +182,7 @@ if (isset($_POST['btnWifiOn']))
 <tr>
 <td>
 	 
-	<textarea name="scan" rows="10" cols="80"><?php 
+	<textarea name="scan" rows="10" cols="80";><?php 
 			echo implode("\n",$screen); ?></textarea>
  </td>
 </tr>  
@@ -203,7 +208,8 @@ SSID (network name): <input type="text" name="ssid" value="<?php echo $ssid;?>">
 <br>
 Password: <input type="password" name="password" value="<?php echo $password;?>">
 <br>
-<button name="btnAdd" type="submit" class="red" style = "height:30px;font-size:12px;">Add Network & Connect</button>
+<button name="btnAdd" type="submit" class="red" style = "height:30px;font-size:12px;">Add Network</button>
+<!--<button name="btnConn" type="submit" class="red" style = "height:30px;font-size:12px;">Connect Network</button>-->
 </td>
 <td>
         <button name="btnSwitch" type="submit" class="red" style = "height:30px; width:105px; font-size:12px;">Switch to SSID</button>
