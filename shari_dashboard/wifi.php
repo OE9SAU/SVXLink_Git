@@ -102,7 +102,7 @@ include_once "include/buttons.php";
 
    // echo '<td valign="center" style = "height:455px;width:550px; border:none;  background-color:#f1f1f1;">';
     echo '<td valign="center" style = "height:455px;width:550px; border:none; background-color:#f1f1f1;">';
-    echo '<iframe src="/wifi"  width="615px" height="450px" style = "background-color:#f1f1f1;"></iframe>';
+    echo '<iframe src="/wifi" frameborder="0"  width="650px" height="450px" style = "background-color:e1e1e1;margin-top:-15px;"></iframe>';
     echo '</td>';
  
 ?>
