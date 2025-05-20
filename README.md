@@ -5,9 +5,11 @@ The SHARI Image includes a WLAN Configuration Page for easy switching between Wi
 The original version of the code may have some permission issues. To get it working properly, run the following commands:
 
 **Backup the original file**
+
 sudo cp /var/www/html/shari_dashboard/wifi/index.php /var/www/html/shari_dashboard/wifi/index.php.bak
 
 **Download the fixed version of the file**
+
 sudo wget -O /var/www/html/shari_dashboard/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php
 
 
