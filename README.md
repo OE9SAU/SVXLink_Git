@@ -8,9 +8,6 @@ sudo cp /var/www/html/shari_dashboard/wifi/index.php /var/www/html/shari_dashboa
 
 sudo wget -O /var/www/html/shari_dashboard/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php
 
-
-
-
 **TG_Update:**
 
 Replace or copy the "tgdb_update.sh" into your "/var/www/html/include" directory and startup the script with "./tgdb_update.sh".
@@ -20,8 +17,6 @@ The script will overwrites the old TG-list and add all selectable and monitorabl
 In case of error there are some permission problems, use:
 
 sudo chmod +x tgdb_update.sh && sudo ./tgdb_update.sh
-
-
 
 **shari_goes_aprs:**
 
