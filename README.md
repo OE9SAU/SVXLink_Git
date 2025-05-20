@@ -1,3 +1,14 @@
+**SHARI WLAN:**
+Current SHARI Image including a WLAN Config Page. YOUR-IP/wifi.php
+The orignal code has some right issues. To get the code running use:
+
+sudo cp /var/www/html/shari_dashboard/wifi/index.php /var/www/html/shari_dashboard/wifi/index.php.bak
+
+sudo wget -O /var/www/html/shari_dashboard/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php
+
+
+
+
 **TG_Update:**
 
 Replace or copy the "tgdb_update.sh" into your "/var/www/html/include" directory and startup the script with "./tgdb_update.sh".
