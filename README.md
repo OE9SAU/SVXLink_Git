@@ -1,6 +1,7 @@
 **SHARI WLAN:**
 
 Current SHARI Image including a WLAN Config Page. Usefull for changing WLAN locations: http://YOUR-IP/wifi.php
+
 The orignal code has some right issues. To get the code running use:
 
 sudo cp /var/www/html/shari_dashboard/wifi/index.php /var/www/html/shari_dashboard/wifi/index.php.bak
