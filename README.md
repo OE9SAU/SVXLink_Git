@@ -1,16 +1,18 @@
-# SHARI–WLAN Config:
+# SHARI «Wifi Configurator» 
 
-The SHARI Image includes a WLAN Configuration Page for easy switching between WiFi networks.You can access it in your browser at: http://YOUR-IP/wifi.php
+The SHARI Image includes a WLAN Configuration Page for switching between WiFi networks.You can access it in your browser at: http://YOUR-SHARI-IP/wifi.php
 
 The original version of the code may have some permission issues. To get it working properly, run the following commands:
 
 **Backup the original file**
 
-sudo cp /var/www/html/shari_dashboard/wifi/index.php /var/www/html/shari_dashboard/wifi/index.php.bak
+sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php.bak
+
 
 **Download the fixed version of the file**
 
-sudo wget -O /var/www/html/shari_dashboard/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php
+sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
+
 
 
 # TG_Update:
@@ -24,7 +26,7 @@ In case of error there are some permission problems, use:
 sudo chmod +x tgdb_update.sh && sudo ./tgdb_update.sh
 
 
-# Shari_goes_aprs:
+# SHARI_goes_aprs ! WORK IN PROGRESS
 
 Script that sends your position data to an APRS server for your SHARI position, using ncat to transmit the data.
 
