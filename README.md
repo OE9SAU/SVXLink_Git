@@ -6,12 +6,12 @@ The original version of the code may have some permission issues. To get it work
 
 **Backup the original file**
 
-sudo cp /var/www/html/shari_dashboard/wifi/index.php /var/www/html/shari_dashboard/wifi/index.php.bak && sudo cp /var/www/html/shari_dashboard/wifi.php /var/www/html/shari_dashboard/wifi.php.bak
+sudo cp /var/www/html/wifi/index.php /var/www/html/shari_dashboard/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/shari_dashboard/wifi.php.bak
 
 
 **Download the fixed version of the file**
 
-sudo wget -O /var/www/html/shari_dashboard/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/shari_dashboard/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
+sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
 
 
 
