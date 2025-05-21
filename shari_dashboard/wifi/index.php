@@ -87,8 +87,8 @@ if (isset($_POST['btnScan']))
     {
         $retval = null;
 	$screen = null;
-	exec('sudo nmcli dev wifi rescan');
-	exec('sudo nmcli dev wifi list 2>&1',$screen,$retval);
+	exec('sudo /usr/bin/nmcli dev wifi rescan');
+	exec('sudo /usr/bin/nmcli dev wifi list 2>&1',$screen,$retval);
 	//$screen[$screen.length]="\n";
 	$screen[$screen.$length]="Keep in mind the non-standard WIFI antenna.";
 }
@@ -99,7 +99,7 @@ if (isset($_POST['btnConnList']))
 	$retval = null;
 	$screen = null;
 	//exec('nmcli dev wifi rescan');
-        exec('sudo nmcli con show --order type 2>&1',$screen,$retval);
+        exec('sudo /usr/bin/nmcli con show --order type 2>&1',$screen,$retval);
 }
 
 if (isset($_POST['btnSwitch']))
@@ -109,7 +109,7 @@ if (isset($_POST['btnSwitch']))
         $screen = null;
         $ssid = $_POST['ssid'];
 	//exec('nmcli dev wifi rescan');
-        $command = "sudo nmcli dev wifi connect \"" .$ssid. "\" 2>&1"; 
+        $command = "sudo /usr/bin/nmcli dev wifi connect \"" .$ssid. "\" 2>&1"; 
 	exec($command,$screen,$retval);
 }
 
@@ -120,7 +120,7 @@ if (isset($_POST['btnDelete']))
         $screen = null;
         $ssid = $_POST['ssid'];
         //exec('nmcli dev wifi rescan');
-        $command = "sudo nmcli con delete \"" .$ssid. "\" 2>&1";
+        $command = "sudo /usr/bin/nmcli con delete \"" .$ssid. "\" 2>&1";
         exec($command,$screen,$retval);
 }
 
@@ -149,7 +149,7 @@ if (isset($_POST['btnWifiStatus']))
         //$ssid = $_POST['ssid'];
         //$password = $_POST['password'];
         //exec('nmcli dev wifi rescan');
-        $command = 'sudo nmcli radio 2>&1';
+        $command = 'sudo /usr/bin/nmcli radio 2>&1';
         exec($command,$screen,$retval);
 }
 
@@ -162,9 +162,9 @@ if (isset($_POST['btnWifiOn']))
         //$ssid = $_POST['ssid'];
         //$password = $_POST['password'];
         //exec('nmcli dev wifi rescan');
-        $command = 'sudo nmcli radio wifi on 2>&1';
+        $command = 'ssudo /usr/bin/nmcli radio wifi on 2>&1';
         exec($command,$screen,$retval);
-	$command = 'sudo nmcli radio wifi 2>&1';
+	$command = 'sudo /usr/bin/nmcli radio wifi 2>&1';
         exec($command,$screen,$retval);
 
 
