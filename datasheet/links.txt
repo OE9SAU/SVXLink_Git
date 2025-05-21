@@ -1,0 +1,2 @@
+https://github.com/ccadic/DRA818U_AND_V_Kicad
+https://github.com/HB9UF/kicad-VHF-UHF-modules
