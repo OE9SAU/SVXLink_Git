@@ -79,7 +79,7 @@ $screen[1] = "";
 $screen[2] = "Please use buttons for actions.";
 $screen[3] = "[Air Scan],[Conn List],[WiFi Status],[WiFi On] works without parameter.";
 $screen[4] = "[Switch to SSID] or [Delete SSID] needs |SSID (network name)|.";
-$screen[5] = "[Add Network & Connect] needs |SSID (network name)| & |Password| & wifi network.";
+$screen[5] = "[Add Network] needs |SSID (network name)| & |Password| & wifi network.";
 $screen[6] = "";
 
 
