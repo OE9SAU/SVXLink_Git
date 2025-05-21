@@ -1,6 +1,6 @@
 # SHARI «Wifi Configurator» 
 
-The SHARI Image includes a WLAN Configuration Page for easy switching between WiFi networks.You can access it in your browser at: http://YOUR-IP/wifi.php
+The SHARI Image includes a WLAN Configuration Page for switching between WiFi networks.You can access it in your browser at: http://YOUR-SHARI-IP/wifi.php
 
 The original version of the code may have some permission issues. To get it working properly, run the following commands:
 
