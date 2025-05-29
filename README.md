@@ -17,11 +17,13 @@ sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9S
 
 # TG_Update:
 
-Backup command (safely backs up old files, if they exist):
+**Backup command (safely backs up old files, if they exist):**
+
 sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh.bak 2>/dev/null && \
 sudo cp /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.txt.bak 2>/dev/null
 
-Download and run the new script:
+**Download and run the new script:**
+
 sudo wget -O /var/www/html/include/tgdb_update.sh https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/TG_Update/tgdb_update.sh && \
 sudo chmod +x /var/www/html/include/tgdb_update.sh && \
 cd /var/www/html/include && \
