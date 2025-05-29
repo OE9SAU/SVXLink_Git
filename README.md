@@ -17,13 +17,15 @@ sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9S
 
 # TG_Update:
 
-Replace or copy the "tgdb_update.sh" into your "/var/www/html/include" directory and startup the script with "./tgdb_update.sh".
-The script will overwrites the old TG-list and add all selectable and monitorable talkgroups for SVXLink Austria.
+Backup command (safely backs up old files, if they exist):
+sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh.bak 2>/dev/null && \
+sudo cp /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.txt.bak 2>/dev/null
 
-
-In case of error there are some permission problems, use:
-
-sudo chmod +x tgdb_update.sh && sudo ./tgdb_update.sh
+Download and run the new script:
+sudo wget -O /var/www/html/include/tgdb_update.sh https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/TG_Update/tgdb_update.sh && \
+sudo chmod +x /var/www/html/include/tgdb_update.sh && \
+cd /var/www/html/include && \
+sudo ./tgdb_update.sh
 
 
 # SHARI_goes_aprs ! WORK IN PROGRESS
