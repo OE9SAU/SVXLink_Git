@@ -4,6 +4,7 @@
 /* (C) 2022 by Heiko, DL1BZ */
 $tgdb_array = [ 
 '20' => 'Test TG',
+'25' => 'OE Jugendrunde',
 '232' => 'Austria TG',
 '262' => 'Deutschland TG',
 '2321' => 'OE1 Wien',
