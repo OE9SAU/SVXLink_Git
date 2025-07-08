@@ -42,7 +42,7 @@ v1.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-G
 
 sudo apt install ncat
 
-sudo nano shari_aprs.servicet
+sudo nano shari_aprs.service
 
 [Unit]
 Description=startet /home/svxlink/shari_aprs.py beim Booten
