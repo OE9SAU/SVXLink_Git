@@ -46,12 +46,16 @@ sudo nano shari_aprs.service
 
 *[Unit]*
 *Description=startet /home/svxlink/shari_aprs.py beim Booten*
+
 *After=network.target*
 
 *[Service]*
 *User=svxlink*
+
 *WorkingDirectory=/home/svxlink*
+
 *ExecStart=/usr/bin/python3 /home/svxlink/shari_aprs.py*
+
 *Restart=on-failure*
 
 *[Install]*
