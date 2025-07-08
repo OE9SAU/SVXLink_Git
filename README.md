@@ -43,8 +43,8 @@ v1.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-G
 sudo apt install ncat
 
 sudo nano shari_aprs.service
-
-*[Unit]*
+ ```
+[Unit]
 *Description=startet /home/svxlink/shari_aprs.py beim Booten*
 
 *After=network.target*
@@ -60,6 +60,7 @@ sudo nano shari_aprs.service
 
 *[Install]*
 *WantedBy=multi-user.target*
+ ```
 
 sudo systemctl daemon-reload
 
