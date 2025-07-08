@@ -38,11 +38,11 @@ v1.0 only USB GPS-Mouse
 
 v1.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-GPIO*
 
-Howto:
+**Howtorun:**
 
-***sudo apt install ncat***
+sudo apt install ncat
 
-***sudo nano shari_aprs.servicet***
+sudo nano shari_aprs.servicet
 
 [Unit]
 Description=startet /home/svxlink/shari_aprs.py beim Booten
@@ -57,8 +57,8 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 
-**sudo systemctl daemon-reload**
-**sudo systemctl restart shari_aprs.service**
-**sudo systemctl status shari_aprs.service**
+sudo systemctl daemon-reload
+sudo systemctl restart shari_aprs.service
+sudo systemctl status shari_aprs.service
 
 
