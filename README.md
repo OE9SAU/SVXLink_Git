@@ -34,7 +34,7 @@ sudo ./tgdb_update.sh
 
 Script that sends your position data to an APRS server for your SHARI position, using ncat to transmit the data.
 
-sudo apt install ncat
+*sudo apt install ncat*
 
 v1.0 only USB GPS-Mouse
 
