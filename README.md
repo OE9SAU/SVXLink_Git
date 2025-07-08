@@ -5,30 +5,30 @@ The SHARI Image includes a WLAN Configuration Page for switching between WiFi ne
 The original version of the code may have some permission issues. To get it working properly, run the following commands:
 
 **Backup the original file**
-
+ ```
 sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php.bak
-
+ ```
 
 **Download the fixed version of the file**
-
+ ```
 sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
-
+ ```
 
 
 # TG_Update:
 
 **Backup command (safely backs up old files, if they exist):**
-
+ ```
 sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh.bak && 
 sudo cp /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.txt.bak
-
+ ```
 **Download and run the new script:**
-
+ ```
 sudo wget -O /var/www/html/include/tgdb_update.sh https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/TG_Update/tgdb_update.sh && \
 sudo chmod +x /var/www/html/include/tgdb_update.sh && \
 cd /var/www/html/include && \
 sudo ./tgdb_update.sh
-
+ ```
 
 # SHARI goes APRS:
 
