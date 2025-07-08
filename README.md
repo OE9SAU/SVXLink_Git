@@ -41,6 +41,7 @@ v1.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-G
 **!Your need to install ncat: sudo apt install ncat**
 
 **HowtoAUTOrun:**
+
 sudo nano shari_aprs.service
  ```
 [Unit]
