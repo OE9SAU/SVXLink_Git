@@ -30,7 +30,7 @@ cd /var/www/html/include && \
 sudo ./tgdb_update.sh
 
 
-**SHARI goes APRS:**
+# SHARI goes APRS:
 
 Script that sends your position data to an APRS server for your SHARI position, using ncat to transmit the data.
 
