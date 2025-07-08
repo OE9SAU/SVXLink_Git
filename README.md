@@ -58,7 +58,9 @@ sudo nano shari_aprs.service
 *WantedBy=multi-user.target*
 
 sudo systemctl daemon-reload
+
 sudo systemctl restart shari_aprs.service
+
 sudo systemctl status shari_aprs.service
 
 
