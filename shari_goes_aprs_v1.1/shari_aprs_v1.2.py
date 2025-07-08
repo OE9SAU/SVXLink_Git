@@ -98,7 +98,7 @@ def read_gps_data():
 def send_aprs_data(lat, lon, alt, speed):
     aprsauth = f"user {user} pass {password}"
     timestamp = time.strftime("%H%M%Sz", time.gmtime())  # UTC-Zeit z.B. 142530z
-    data = f"{senduser}>APN100,TCPIP*:={lat}{table}{lon}{symbol}{comment}:Alt:{alt:.2f}m Speed:{speed:.2f}km/h"
+    data = f"{senduser}>APN100,TCPIP*:@{timestamp}{lat}{table}{lon}{symbol}{comment} Alt:{alt:.0f}m Speed:{speed:.0f}km/h"
 
     try:
         process = subprocess.run(
