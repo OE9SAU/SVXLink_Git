@@ -45,23 +45,22 @@ sudo apt install ncat
 sudo nano shari_aprs.service
  ```
 [Unit]
-*Description=startet /home/svxlink/shari_aprs.py beim Booten*
+Description=startet /home/svxlink/shari_aprs.py beim Booten
 
-*After=network.target*
+After=network.target
 
-*[Service]*
-*User=svxlink*
+[Service]
+User=svxlink
 
-*WorkingDirectory=/home/svxlink*
+WorkingDirectory=/home/svxlink
 
-*ExecStart=/usr/bin/python3 /home/svxlink/shari_aprs.py*
+ExecStart=/usr/bin/python3 /home/svxlink/shari_aprs.py
 
-*Restart=on-failure*
+Restart=on-failure
 
-*[Install]*
-*WantedBy=multi-user.target*
+[Install]
+WantedBy=multi-user.target
  ```
-
 sudo systemctl daemon-reload
 
 sudo systemctl restart shari_aprs.service
