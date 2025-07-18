@@ -13,7 +13,7 @@ uuid=1c27a480-df7b-4173-a6fb-0bb459d37733
 type=wifi
 # diese Zeile
 autoconnect=true
-# einfügen.
+# einfÃ¼gen.
 
 ***************************************************
 damit wifi.php funktioniert:
@@ -23,7 +23,7 @@ und dann:
 sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
 
 ***************************************************
-damit wifi im Menü sichtbar ist: 
+damit wifi im MenÃ¼ sichtbar ist: 
 
 sudo nano /var/www/html/include/top_menu.php
 
@@ -64,7 +64,7 @@ if (session_status() === PHP_SESSION_NONE) {
    <?php
 
 ***************************************************
-DTMF Schnellwahl modifizieren +++++++++++++++++++++++++++++++++++++++++++
+DTMF Schnellwahl modifizieren
 sudo nano /var/www/html/include/config.inc.php
 
 //
@@ -86,16 +86,16 @@ define("KEY10", array(' D10 ','*D10#','red'));
 
 ***********************************************************************************************************
 STEUERUNG per DTMF 
-Diese Möglichkeit ist nicht nur für den DjSpot sondern Svxlink allgemein.
-Es ist vieles möglich, zb svxlink neu starten, Raspberry Neu starten / Reboot usw.
+Diese MÃ¶glichkeit ist nicht nur fÃ¼r den DjSpot sondern Svxlink allgemein.
+Es ist vieles mÃ¶glich, zb svxlink neu starten, Raspberry Neu starten / Reboot usw.
 Bei Internetverlust hilf kein SSH oder Dashboard, wenn man zb. auf der Autobahn unterwegs ist DTMF Befehl gesendet schon gehts wieder.
 
 Was ist zu tun ??
 
-per SSH einloggen (bei Schreibgeschützten Image, Schreibfähigkeit herstellen)
+per SSH einloggen (bei SchreibgeschÃ¼tzten Image, SchreibfÃ¤higkeit herstellen)
 
 danach
-CODE: ALLES AUSWÄHLEN
+CODE: ALLES AUSWÃ„HLEN
 
  
 cd /usr/share/svxlink/events.d/local
@@ -154,7 +154,7 @@ namespace eval Logic {
  }
 }
 
-Die Dateirechte von root auf svxlink übertragen: 
+Die Dateirechte von root auf svxlink Ã¼bertragen: 
 sudo chown svxlink:svxlink controll.tcl
 
 Danach svxlink neu starten
