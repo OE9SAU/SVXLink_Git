@@ -1,0 +1,163 @@
+Allgemeine Installationsanleitung: 
+https://dc9vq.de/fm-funknetz-neues-raspi-image-fuer-den-shari-hotspot-auf-basis-vom-sa818a/
+
+******************************************
+automatischer Reconnect des Wlan nach Verlust der Wlan Verbindung:
+
+cd /etc/NetworkManager/system-connections/
+sudo nano <SSID>.nmconnection
+
+[connection]
+id=SSID
+uuid=1c27a480-df7b-4173-a6fb-0bb459d37733
+type=wifi
+# diese Zeile
+autoconnect=true
+# einfügen.
+
+***************************************************
+damit wifi.php funktioniert:
+
+sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php.bak
+und dann: 
+sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
+
+***************************************************
+damit wifi im Menü sichtbar ist: 
+
+sudo nano /var/www/html/include/top_menu.php
+
+das   <!-- muss von der Zeile mit wifi weg und bei der  darunter wieder davorstellen
+
+also so muss es dann aussehen:
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+   <div id="display-links">
+  <p style = "padding-right: 5px; text-align: right; color: #000000;">
+  <a style = "color: black;">Display</a> |
+  <a href="/index.php" style = "color: #0000ff;">Dashboard</a> | 
+  <a href="/node.php" style = "color: #0000ff;">Nodes</a> | 
+  <a href="/tg.php" style = "color: #0000ff;">Talk Groups</a> | 
+  <!--<a href="/dtmf.php" style = "color: #0000ff;">Dtmf</a> | --> 
+  <a href="/audio.php" style = "color: #0000ff;">Audio</a> | 
+  <a href="/wifi.php" style = "color: #0000ff;">Wifi</a> | 
+  <!--<a href="/network.php" style = "color: #0000ff;">Network</a> |
+  <a href="/nodeInfo.php" style = "color: #0000ff;">Node Info</a> |-->
+  
+  <a href="editor.php?id=log" style = "color: crimson;" id="log">Log</a> |
+  <a href="/authorise.php" style = "color: crimson;">Authorise</a></p>
+  </div>
+  <div id="full-edit-links">
+  <p style = "padding-right: 5px; text-align: right; color: #000000;" <a style = "color: black;">Full Edit</a> |
+  <a href="/editor.php?id=svxlink" style = "color: crimson;" id="svxlink">SVXLink</a> |
+  <a href="/editor.php?id=amixer" style = "color: crimson;" id="echolink">Amixer</a> |
+  <a href="/editor.php?id=echolink" style = "color: crimson;" id="echolink">EchoLink</a> |
+  <a href="/editor.php?id=tclvoicemail" style = "color: crimson;" id="tclvoicemail">TclVoiceMail</a> |
+  <a href="/editor.php?id=metarinfo" style = "color: crimson;" id="metarinfo">MetarInfo</a> |
+  <a href="/editor.php?id=nodeInfo" style = "color: crimson;" id="nodeInfo">NodeInfo</a> |
+  <a href="/editor.php?id=power" style = "color: green;">Power</a></p>
+    </div>
+
+   <?php
+
+***************************************************
+DTMF Schnellwahl modifizieren +++++++++++++++++++++++++++++++++++++++++++
+sudo nano /var/www/html/include/config.inc.php
+
+//
+// Button keys define: description button, DTMF command or command, color of bu>
+//
+// DTMF keys
+// syntax: 'KEY number,'Description','DTMF code','color button'.
+//
+define("KEY1", array(' Last Call ','*91#','green'));
+define("KEY2", array(' *2329# ','*912329#','green'));
+define("KEY3", array(' *23291# ','*9123291#','green'));
+define("KEY4", array(' D4 ','*D4#','orange'));
+define("KEY5", array(' D5', '*D5#','purple'));
+define("KEY6", array(' D6 ','*D6#','purple'));
+define("KEY7", array(' D7 ','*D7#','purple'));
+define("KEY8", array(' D8 ','*D8#','blue'));
+define("KEY9", array(' D9 ','*D9#','blue'));
+define("KEY10", array(' D10 ','*D10#','red'));
+
+***********************************************************************************************************
+STEUERUNG per DTMF 
+Diese Möglichkeit ist nicht nur für den DjSpot sondern Svxlink allgemein.
+Es ist vieles möglich, zb svxlink neu starten, Raspberry Neu starten / Reboot usw.
+Bei Internetverlust hilf kein SSH oder Dashboard, wenn man zb. auf der Autobahn unterwegs ist DTMF Befehl gesendet schon gehts wieder.
+
+Was ist zu tun ??
+
+per SSH einloggen (bei Schreibgeschützten Image, Schreibfähigkeit herstellen)
+
+danach
+CODE: ALLES AUSWÄHLEN
+
+ 
+cd /usr/share/svxlink/events.d/local
+falls das Verzeichnis "local" nicht besteht, bitte mit mkdir local erstellen.
+
+Neue Datei erstellen
+sudo nano controll.tcl
+
+mit folgenden Inhalt
+
+namespace eval Logic {
+  # variable for Logic.tcl (muss im namespace Logic definiert werden)
+  variable ignore_dtmf 0;
+  # DTMF Eingabe sperren
+  proc dtmf_cmd_received {cmd} {
+     puts "DTMF command received: $cmd";
+     variable ignore_dtmf;
+     if {$cmd == "999"} {
+         set ignore_dtmf 1;
+         return 1;
+     }
+
+# Raspberry pi Herunterfahren
+  if {$cmd == "0774"} {
+    puts "Halting RPi: $cmd";
+    playMsg "Core" "unknown_command"
+    exec sudo shutdown -h now &
+    return 1
+  }
+
+  # Raspberry pi Neustarten
+  if {$cmd == "54321"} {
+    puts "Rebooting RPi: $cmd";
+    playMsg "Core" "unknown_command"
+    exec sudo reboot &
+    return 1
+  }
+
+  # Svxlink neustarten (Restart)
+  if {$cmd == "9876"} {
+    puts "Rebooting RPi: $cmd";
+    playMsg "Core" "unknown_command"
+    exec sudo service svxlink restart &
+    return 1
+  }
+    # DTMF Eingabe einschalten
+     if {$ignore_dtmf} {
+      if {$cmd == "998"} {
+         set ignore_dtmf 0;
+         return 1;
+      } elseif {$cmd == ""} {
+         return 1;
+      }
+     }
+   return 0;
+ }
+}
+
+Die Dateirechte von root auf svxlink übertragen: 
+sudo chown svxlink:svxlink controll.tcl
+
+Danach svxlink neu starten
+sudo svxlink restart
+
+**********************************************************************************************************************
