@@ -1,4 +1,4 @@
-# SVXLink Remote Display» 
+# SVXLink Remote Display
 see documentation [here](svxlink_remote_display/Svxlink_Remote_Display.pdf)
 
 
