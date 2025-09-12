@@ -1,3 +1,7 @@
+# SVXLink Remote Display» 
+see documentation [here](svxlink_remote_display/Svxlink_Remote_Display.pdf)
+
+
 # SHARI «Wifi Configurator» 
 
 The SHARI Image includes a WLAN Configuration Page for switching between WiFi networks.You can access it in your browser at: http://YOUR-SHARI-IP/wifi.php
