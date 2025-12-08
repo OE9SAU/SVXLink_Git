@@ -42,7 +42,9 @@ Script that sends your position data to an APRS server for your SHARI position, 
 
 v1.0 only USB GPS-Mouse
 
-v1.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-GPIO*
+*v2.0 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-GPIO*, without timestamp
+
+v2.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-GPIO*, with timestamp
 
 **!Your need to install ncat: sudo apt install ncat**
 
