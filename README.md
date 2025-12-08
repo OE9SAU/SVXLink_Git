@@ -53,7 +53,7 @@ v2.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-G
 sudo nano shari_aprs.service
  ```
 [Unit]
-Description=startet /home/svxlink/shari_aprs.py beim Booten
+Description=startet shari_aprs_vXXX.py beim booten
 
 After=network.target
 
