@@ -53,7 +53,7 @@ v2.1 select fixed *LAT&LON* or *GPS-Mouse over USB* or *GPS-Mouse over RX-UART-G
 sudo nano shari_aprs.service
  ```
 [Unit]
-Description=startet shari_aprs_vXXX.py beim booten
+Description=startet shari_aprs_vx.x.py beim booten
 
 After=network.target
 
@@ -62,7 +62,7 @@ User=svxlink
 
 WorkingDirectory=/home/svxlink
 
-ExecStart=/usr/bin/python3 /home/svxlink/the_right_name_of_the_script.py
+ExecStart=/usr/bin/python3 /home/svxlink/shari_aprs_v2.1.py
 
 Restart=on-failure
 
