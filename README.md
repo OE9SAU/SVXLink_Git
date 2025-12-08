@@ -62,7 +62,7 @@ User=svxlink
 
 WorkingDirectory=/home/svxlink
 
-ExecStart=/usr/bin/python3 /home/svxlink/shari_aprs.py
+ExecStart=/usr/bin/python3 /home/svxlink/the_right_name_of_the_script.py
 
 Restart=on-failure
 
