@@ -8,12 +8,12 @@ apt update
 apt install -y python3-pip python3-pil python3-smbus i2c-tools
 python3 -m pip install --upgrade luma.oled
 
-curl -fsSL https://raw.githubusercontent.com/OE9SAU/oled-ip-sh1106/main/oled_ip_eth0_sh1106.py \
+curl -fsSL https://raw.githubusercontent.com/OE9SAU/oled-ip-sh1106/main/oled_sh1106.py \
   -o "$TARGET"
 
 chmod +x "$TARGET"
 
-cat >/etc/systemd/system/oled-ip.service <<EOF
+cat >/etc/systemd/system/oled-sh1106.service <<EOF
 [Unit]
 Description=SH1106 OLED Display
 After=network-online.target
