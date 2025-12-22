@@ -8,7 +8,7 @@ apt update
 apt install -y python3-pip python3-pil python3-smbus i2c-tools
 python3 -m pip install --upgrade luma.oled
 
-curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/oled_sh1106.py \
+curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/oled_sh1106.py \
   -o "$TARGET"
 
 chmod +x "$TARGET"
