@@ -13,7 +13,7 @@ curl -fsSL https://raw.githubusercontent.com/OE9SAU/oled-ip-sh1106/main/oled_sh1
 
 chmod +x "$TARGET"
 
-cat >/etc/systemd/system/oled-ip.service <<EOF
+cat >/etc/systemd/system/oled-sh1106.service <<EOF
 [Unit]
 Description=SH1106 OLED Display
 After=network-online.target
