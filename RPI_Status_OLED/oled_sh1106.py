@@ -7,11 +7,8 @@ import shutil
 import os
 import subprocess
 from datetime import datetime
-<<<<<<< HEAD
 from typing import Optional
-=======
 from typing import Optional, Iterable, Tuple
->>>>>>> c0d7ee925a1054313af9a59d0bb3084f6c543362
 
 from luma.core.interface.serial import i2c
 from luma.oled.device import sh1106
@@ -41,8 +38,6 @@ def link_up(ifname: str) -> bool:
         return False
 
 
-<<<<<<< HEAD
-=======
 def pick_iface(preferred: Iterable[str] = ("wlan0", "eth0")) -> str:
     """
     Wählt das 'beste' Interface:
@@ -161,7 +156,6 @@ def get_wlan_ssid() -> Optional[str]:
         return None
 
 
->>>>>>> c0d7ee925a1054313af9a59d0bb3084f6c543362
 def main() -> None:
     IFACE = "eth0"
     I2C_PORT = 1
@@ -183,15 +177,11 @@ def main() -> None:
     title = get_hostname()
 
     while True:
-<<<<<<< HEAD
         is_up = link_up(IFACE)
         ip = get_iface_ipv4(IFACE) if is_up else None
-=======
         iface = pick_iface(("wlan0", "eth0"))
         ip = get_iface_ipv4(iface)
         is_up = bool(ip) or iface_up(iface)
->>>>>>> c0d7ee925a1054313af9a59d0bb3084f6c543362
-
         status = "UP" if is_up else "DOWN"
         ip_text = ip if ip else "no IP"
         now = datetime.now().strftime("%H:%M:%S")
@@ -240,17 +230,14 @@ def main() -> None:
             lines.append("")
 
         with canvas(device) as draw:
-<<<<<<< HEAD
             draw.text((0, 0),  "Raspberry Pi", font=font, fill=255)
             draw.text((0, 14), f"{IFACE}: {status}", font=font, fill=255)
             draw.text((0, 28), f"IP: {ip_text}", font=font, fill=255)
             draw.text((0, 42), f"Time: {now}", font=font, fill=255)
-=======
             y = 0
             for line in lines[:6]:
                 draw.text((0, y), line, font=font, fill=255)
                 y += 10
->>>>>>> c0d7ee925a1054313af9a59d0bb3084f6c543362
 
         time.sleep(REFRESH_SECONDS)
 
