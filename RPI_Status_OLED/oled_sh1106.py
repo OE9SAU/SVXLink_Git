@@ -192,7 +192,6 @@ def page3_details(title: str, ram_used: str, ram_total: str, disk_used: str, dis
     l1 = title[:16] + " DET"
     l2 = f"RAM {ram_used}/{ram_total}"
     l3 = f"SD  {disk_used}/{disk_total}"
-    l4 = "Page 3/3"
     return [l1[:21], l2[:21], l3[:21], l4[:21]]
 
 
