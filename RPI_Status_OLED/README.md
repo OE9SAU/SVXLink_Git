@@ -48,10 +48,6 @@ Standardpfad (User pi):
 
 sudo rm -f /home/pi/oled_sh1106.py
 
-Falls ein anderer Benutzer verwendet wurde:
-
-sudo rm -f /home/<USERNAME>/oled_sh1106.py
-
 Optional: Python-Abhängigkeiten entfernen
 -----------------------------------------
 Nur ausführen, wenn diese Pakete nicht mehr benötigt werden:
