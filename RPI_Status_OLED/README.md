@@ -67,14 +67,3 @@ Python-Skript:        /home/<user>/oled_sh1106.py
 systemd-Service:     /etc/systemd/system/oled-sh1106.service
 
 Service-Name:        oled-sh1106.service
-
-Sicherheitshinweis
-------------------
-Der Installer wird mit Root-Rechten ausgeführt:
-
-curl … | sudo bash
-
-Prüfen Sie den Inhalt vorab:
-
-curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | less
-
