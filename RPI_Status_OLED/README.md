@@ -33,12 +33,15 @@ Deinstallation (alles rückgängig machen)
 1) Service stoppen und deaktivieren
 
 sudo systemctl stop oled-sh1106.service
+
 sudo systemctl disable oled-sh1106.service
 
 2) Service-Datei entfernen
 
 sudo rm -f /etc/systemd/system/oled-sh1106.service
+
 sudo systemctl daemon-reload
+
 sudo systemctl reset-failed oled-sh1106.service
 
 3) Python-Skript löschen
