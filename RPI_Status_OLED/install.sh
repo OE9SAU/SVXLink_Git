@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-USER_HOME=$(getent passwd "${SUDO_USER:-pi}" | cut -d: -f6)
+RUN_AS="${SUDO_USER:-${USER:-pi}}"
+USER_HOME="$(getent passwd "$RUN_AS" | cut -d: -f6)"
 TARGET="$USER_HOME/oled_sh1106.py"
 
 apt update
 apt install -y python3-pip python3-pil python3-smbus i2c-tools
+
 python3 -m pip install --upgrade luma.oled
 
-curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/RPI_Status_OLED/oled_sh1106.py \
+
+curl -fsSL "https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/RPI_Status_OLED/oled_sh1106.py" \
   -o "$TARGET"
 
 chmod +x "$TARGET"
+chown "$RUN_AS:$RUN_AS" "$TARGET" || true
 
 cat >/etc/systemd/system/oled-sh1106.service <<EOF
 [Unit]
@@ -21,6 +25,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
+User=$RUN_AS
 ExecStart=/usr/bin/python3 $TARGET
 Restart=always
 RestartSec=2
@@ -30,4 +35,4 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-systemctl enable --now oled-ip.service
+systemctl enable --now oled-sh1106.service
