@@ -81,6 +81,8 @@ sudo systemctl status shari_aprs.service
 
 Sicherheitshinweis, der Installer wird mit Root-Rechten ausgeführt, mehr Infos im README
 
+https://github.com/OE9SAU/SVXLink_Git/blob/main/RPI_Status_OLED/README.md
+
 ```
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/RPI_Status_OLED/install.sh | sudo bash
 ```
