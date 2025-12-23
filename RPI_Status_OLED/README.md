@@ -57,12 +57,15 @@ sudo python3 -m pip uninstall -y luma.oled luma.core
 Optional: Systempakete entfernen
 --------------------------------
 sudo apt remove -y python3-pip python3-pil python3-smbus i2c-tools
+
 sudo apt autoremove -y
 
 Dateien & Services (Übersicht)
 ------------------------------
 Python-Skript:        /home/<user>/oled_sh1106.py
+
 systemd-Service:     /etc/systemd/system/oled-sh1106.service
+
 Service-Name:        oled-sh1106.service
 
 Sicherheitshinweis
@@ -75,6 +78,3 @@ Prüfen Sie den Inhalt vorab:
 
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | less
 
-Lizenz
-------
-MIT License
