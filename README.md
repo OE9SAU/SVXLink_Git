@@ -82,7 +82,7 @@ sudo systemctl status shari_aprs.service
 Installation (Raspberry Pi OS)
 
 ```
-curl -fsSL https://github.com/OE9SAU/SVXLink_Git/tree/main/RPI_Status_OLED/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/RPI_Status_OLED/install.sh | sudo bash
 ```
 Nach dem Reboot zeigt das OLED automatisch den LAN-Status und die IP-Adresse an.
 
