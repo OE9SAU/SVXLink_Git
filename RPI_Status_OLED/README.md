@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/
 Nach der Installation:
 - Das Python-Programm wird installiert
 - Ein systemd-Service wird eingerichtet
-- Das OLED startet automatisch beim Boot
+- Das OLED startet automatisch
 
 Service-Status prüfen
 ---------------------
