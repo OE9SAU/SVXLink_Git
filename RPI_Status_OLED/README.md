@@ -25,9 +25,9 @@ Voraussetzungen
 Installation (Empfohlen)
 ------------------------
 Einfach kopieren und ausführen:
-
+ ```
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | sudo bash
-
+ ```
 Nach der Installation:
 - Das Python-Programm wird installiert
 - Ein systemd-Service wird eingerichtet
@@ -66,7 +66,8 @@ Optional: Systempakete entfernen
 --------------------------------
  ```
 sudo apt remove -y python3-pip python3-pil python3-smbus i2c-tools
-
+ ```
+ ```
 sudo apt autoremove -y
  ```
 
