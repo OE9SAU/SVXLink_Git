@@ -12,9 +12,9 @@ Der Installer wird mit Root-Rechten ausgeführt:
 curl … | sudo bash
 
 Prüfen Sie den Inhalt vorab:
-
+ ```
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | less
-
+ ```
 Voraussetzungen
 ---------------
 - Raspberry Pi OS (Bullseye / Bookworm)
@@ -35,40 +35,40 @@ Nach der Installation:
 
 Service-Status prüfen
 ---------------------
+ ```
 systemctl status oled-sh1106.service
-
+ ```
 Deinstallation (alles rückgängig machen)
 ----------------------------------------
 
 1) Service stoppen und deaktivieren
-
-sudo systemctl stop oled-sh1106.service
-
+ ```
+sudo systemctl stop oled-sh1106.service &&
 sudo systemctl disable oled-sh1106.service
-
+ ```
 2) Service-Datei entfernen
-
-sudo rm -f /etc/systemd/system/oled-sh1106.service
-
-sudo systemctl daemon-reload
-
+ ```
+sudo rm -f /etc/systemd/system/oled-sh1106.service && sudo systemctl daemon-reload
+ ```
 3) Python-Skript löschen
 
 Standardpfad (User pi):
-
+ ```
 sudo rm -f /home/pi/oled_sh1106.py
-
+ ```
 Optional: Python-Abhängigkeiten entfernen
 -----------------------------------------
 Nur ausführen, wenn diese Pakete nicht mehr benötigt werden:
-
+ ```
 sudo python3 -m pip uninstall -y luma.oled luma.core
-
+ ```
 Optional: Systempakete entfernen
 --------------------------------
+ ```
 sudo apt remove -y python3-pip python3-pil python3-smbus i2c-tools
 
 sudo apt autoremove -y
+ ```
 
 Dateien & Services (Übersicht)
 ------------------------------
