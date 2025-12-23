@@ -84,7 +84,7 @@ Sicherheitshinweis, der Installer wird mit Root-Rechten ausgeführt, mehr Infos 
 ```
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/RPI_Status_OLED/install.sh | sudo bash
 ```
-Das OLED zeigt anhscliessend automatisch den LAN-Status und die IP-Adresse an.
+Das OLED zeigt anhschliessend den LAN-Status und die IP-Adresse an.
 
 
 
