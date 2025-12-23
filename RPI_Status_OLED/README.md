@@ -5,6 +5,16 @@ SH1106 OLED Status Display (Raspberry Pi)
 Zeigt Netzwerkstatus, IP-Adresse und Uhrzeit auf einem SH1106 OLED am Raspberry Pi an.
 Die Installation erfolgt automatisch per Einzeiler.
 
+Sicherheitshinweis
+------------------
+Der Installer wird mit Root-Rechten ausgeführt:
+
+curl … | sudo bash
+
+Prüfen Sie den Inhalt vorab:
+
+curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | less
+
 Voraussetzungen
 ---------------
 - Raspberry Pi OS (Bullseye / Bookworm)
