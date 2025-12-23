@@ -84,7 +84,7 @@ Mehr Infos im README
 ```
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/RPI_Status_OLED/install.sh | sudo bash
 ```
-Dach zeigt das OLED automatisch den LAN-Status und die IP-Adresse an.
+Das OLED automatisch den LAN-Status und die IP-Adresse an.
 
 
 
