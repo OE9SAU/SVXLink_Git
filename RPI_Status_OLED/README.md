@@ -26,7 +26,7 @@ Installation (Empfohlen)
 ------------------------
 Einfach kopieren und ausführen:
  ```
-curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/RPI_Status_OLED/install.sh | sudo bash
  ```
 Nach der Installation:
 - Das Python-Programm wird installiert
