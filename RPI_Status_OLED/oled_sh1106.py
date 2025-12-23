@@ -81,7 +81,7 @@ def main() -> None:
         now = datetime.now().strftime("%H:%M:%S")
 
         with canvas(device) as draw:
-            draw.text((0, 0),  "Raspberry Pi", font=font, fill=255)
+            draw.text((0, 0),  "OE9GTV - PI", font=font, fill=255)
             draw.text((0, 14), f"{iface}: {status}", font=font, fill=255)
             draw.text((0, 28), f"IP: {ip_text}", font=font, fill=255)
             draw.text((0, 42), f"Time: {now}", font=font, fill=255)
