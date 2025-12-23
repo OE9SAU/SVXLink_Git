@@ -11,122 +11,7 @@ from typing import Optional, Iterable, Tuple
 from luma.core.interface.serial import i2c
 from luma.oled.device import sh1106
 from luma.core.render import canvas
-from PIL import Image, ImageFont
-
-
-def icon_from_rows(rows: list[str]) -> Image.Image:
-    """Erzeugt ein 1-bit Icon aus '0/1' Zeilen."""
-    h = len(rows)
-    w = len(rows[0])
-    im = Image.new("1", (w, h), 0)
-    px = im.load()
-    for y, row in enumerate(rows):
-        for x, ch in enumerate(row):
-            px[x, y] = 1 if ch == "1" else 0
-    return im
-
-
-# 12×12 Icons (optisch “ruhiger” als 8×8)
-ICONS = {
-    "clock": icon_from_rows([
-        "000011110000",
-        "000100001000",
-        "001000000100",
-        "010000000010",
-        "010001100010",
-        "010000100010",
-        "010000000010",
-        "010000000010",
-        "001000000100",
-        "000100001000",
-        "000011110000",
-        "000000000000",
-    ]),
-    "ip": icon_from_rows([
-        "001111111100",
-        "010000000010",
-        "010111101010",
-        "010100101010",
-        "010100101010",
-        "010111101010",
-        "010000000010",
-        "010010010010",
-        "010111111010",
-        "010000000010",
-        "001111111100",
-        "000000000000",
-    ]),
-    "wifi": icon_from_rows([
-        "000000000000",
-        "000111111000",
-        "001000000100",
-        "010011110010",
-        "000100001000",
-        "001001100100",
-        "000010000000",
-        "000100100000",
-        "000001000000",
-        "000001000000",
-        "000000000000",
-        "000000000000",
-    ]),
-    "lan": icon_from_rows([
-        "000001000000",
-        "000001000000",
-        "000001000000",
-        "001111111100",
-        "010000000010",
-        "010011110010",
-        "010010010010",
-        "010011110010",
-        "010000000010",
-        "001111111100",
-        "000001000000",
-        "000000000000",
-    ]),
-    "temp": icon_from_rows([
-        "000001110000",
-        "000010001000",
-        "000010001000",
-        "000010001000",
-        "000010001000",
-        "000010001000",
-        "000010001000",
-        "000010001000",
-        "000011011000",
-        "000010001000",
-        "000001110000",
-        "000000000000",
-    ]),
-    "ram": icon_from_rows([
-        "001111111100",
-        "010000000010",
-        "010111111010",
-        "010100001010",
-        "010101101010",
-        "010101101010",
-        "010100001010",
-        "010111111010",
-        "010000000010",
-        "001111111100",
-        "000101010000",
-        "000000000000",
-    ]),
-    "sd": icon_from_rows([
-        "000011111000",
-        "000111111100",
-        "001100000110",
-        "001011110110",
-        "001010010110",
-        "001011110110",
-        "001100000110",
-        "001100000110",
-        "001111111110",
-        "000111111100",
-        "000011111000",
-        "000000000000",
-    ]),
-}
+from PIL import ImageFont
 
 
 def get_iface_ipv4(ifname: str) -> Optional[str]:
@@ -152,18 +37,22 @@ def iface_up(ifname: str) -> bool:
 
 def pick_iface(preferred: Iterable[str] = ("wlan0", "eth0")) -> str:
     preferred = tuple(preferred)
+
     for ifn in preferred:
         if get_iface_ipv4(ifn):
             return ifn
+
     for ifn in preferred:
         if iface_up(ifn):
             return ifn
+
     return preferred[0]
 
 
 def get_root_disk_usage() -> Tuple[str, str, str]:
     du = shutil.disk_usage("/")
-    used, total = du.used, du.total
+    used = du.used
+    total = du.total
     pct = (used / total) * 100 if total else 0.0
 
     def fmt_bytes(n: float) -> str:
@@ -226,22 +115,6 @@ def get_hostname() -> str:
         return "RaspberryPi"
 
 
-def get_wlan_ssid() -> Optional[str]:
-    try:
-        res = subprocess.run(
-            ["iwgetid", "-r"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            text=True,
-            timeout=0.5,
-            check=False,
-        )
-        ssid = res.stdout.strip()
-        return ssid or None
-    except Exception:
-        return None
-
-
 def get_uptime_short() -> str:
     try:
         with open("/proc/uptime", "r", encoding="utf-8") as f:
@@ -254,45 +127,73 @@ def get_uptime_short() -> str:
         return "?"
 
 
-def draw_lines(device, font, lines_with_icons) -> None:
+def get_wlan_ssid() -> Optional[str]:
     """
-    lines_with_icons: list[tuple[icon_key_or_None, text]]
-    12×12 Icon + Abstand => Text ab x=14.
+    Robust (auch im systemd-Service): SSID über 'iw dev wlan0 link'
     """
+    try:
+        res = subprocess.run(
+            ["iw", "dev", "wlan0", "link"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=0.6,
+            check=False,
+        )
+        for line in res.stdout.splitlines():
+            if "SSID:" in line:
+                return line.split("SSID:", 1)[1].strip() or None
+        return None
+    except Exception:
+        return None
+
+
+def load_font(font_size: int) -> ImageFont.ImageFont:
+    # gängige Pfade am Raspberry Pi OS
+    candidates = [
+        "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ]
+    for path in candidates:
+        try:
+            return ImageFont.truetype(path, font_size)
+        except Exception:
+            pass
+    return ImageFont.load_default()
+
+
+def draw_page(device, font, lines: list[str], line_h: int) -> None:
     with canvas(device) as draw:
         y = 0
-        for icon_key, text in lines_with_icons[:6]:
-            x = 0
-            if icon_key:
-                draw.bitmap((0, y), ICONS[icon_key], fill=255)
-                x = 14
-            draw.text((x, y + 1), text[:20], font=font, fill=255)  # +1 für bessere Baseline
-            y += 10
+        for line in lines:
+            draw.text((0, y), line, font=font, fill=255)
+            y += line_h
 
 
-def page_network(title: str, iface: str, status: str, ip_text: str, now: str, ssid: Optional[str]):
-    net_icon = "wifi" if iface == "wlan0" else "lan"
-    return [
-        (None,  title),
-        (net_icon, f"{iface}:{status}  {now}"),
-        ("ip",  f"{ip_text}"),
-        ("wifi", f"{ssid}" if ssid else "SSID -"),
-        (None,  ""),
-        (None,  "Page 1/2"),
-    ]
+def page1_network(title: str, iface: str, status: str, ip_text: str, ssid: Optional[str], now: str) -> list[str]:
+    # 4 Zeilen, kurz halten
+    l1 = title[:16] + f" {now}"
+    l2 = f"{iface}:{status}"
+    l3 = f"IP {ip_text}"[:21]
+    l4 = f"SSID {ssid}"[:21] if (iface == "wlan0" and ssid) else "SSID -"
+    return [l1, l2, l3, l4]
 
 
-def page_system(title: str, load1: str, temp_c: Optional[float], ram_pct: str, disk_pct: str,
-                ram_used: str, ram_total: str, disk_used: str, disk_total: str, uptime: str):
+def page2_system(title: str, load1: str, temp_c: Optional[float], uptime: str, ram_pct: str, disk_pct: str) -> list[str]:
     t = f"{temp_c:.0f}C" if temp_c is not None else "-C"
-    return [
-        (None,   title),
-        ("temp", f"Temp {t}  Load {load1}"),
-        ("ram",  f"RAM {ram_pct}  {ram_used}/{ram_total}"),
-        ("sd",   f"SD  {disk_pct}  {disk_used}/{disk_total}"),
-        ("clock", f"Up  {uptime}"),
-        (None,   "Page 2/2"),
-    ]
+    l1 = title[:16] + " SYS"
+    l2 = f"Temp {t}  L {load1}"
+    l3 = f"RAM {ram_pct}  SD {disk_pct}"
+    l4 = f"Up {uptime}"
+    return [l1[:21], l2[:21], l3[:21], l4[:21]]
+
+
+def page3_details(title: str, ram_used: str, ram_total: str, disk_used: str, disk_total: str) -> list[str]:
+    l1 = title[:16] + " DET"
+    l2 = f"RAM {ram_used}/{ram_total}"
+    l3 = f"SD  {disk_used}/{disk_total}"
+    l4 = "Page 3/3"
+    return [l1[:21], l2[:21], l3[:21], l4[:21]]
 
 
 def main() -> None:
@@ -300,14 +201,18 @@ def main() -> None:
     I2C_ADDRESS = 0x3C
     ROTATE = 0
 
-    REFRESH_SECONDS = 1   # Messwerte/Refresh
-    PAGE_SECONDS = 5      # Seitenwechsel
+    REFRESH_SECONDS = 1
+    PAGE_SECONDS = 5
+
+    # Größere Schrift: 14 ist meist sehr gut auf 128x64 (4 Zeilen)
+    FONT_SIZE = 14
+    LINE_H = 16  # Zeilenhöhe passend zur Fontgröße (14 -> 16 ist gut)
 
     serial = i2c(port=I2C_PORT, address=I2C_ADDRESS)
     device = sh1106(serial, rotate=ROTATE)
-    font = ImageFont.load_default()
+    font = load_font(FONT_SIZE)
 
-    title = get_hostname()[:21]
+    title = get_hostname()
 
     page = 0
     last_switch = time.monotonic()
@@ -315,28 +220,33 @@ def main() -> None:
     while True:
         now_mono = time.monotonic()
         if now_mono - last_switch >= PAGE_SECONDS:
-            page = (page + 1) % 2
+            page = (page + 1) % 3
             last_switch = now_mono
 
+        # Daten sammeln
         iface = pick_iface(("wlan0", "eth0"))
         ip = get_iface_ipv4(iface)
         is_up = bool(ip) or iface_up(iface)
-
         status = "UP" if is_up else "DOWN"
         ip_text = ip if ip else "no IP"
-        now = datetime.now().strftime("%H:%M:%S")
+        now = datetime.now().strftime("%H:%M")
+
         ssid = get_wlan_ssid() if iface == "wlan0" else None
 
         load1 = get_load1()
         temp_c = get_cpu_temp_c()
+        uptime = get_uptime_short()
         ram_used, ram_total, ram_pct = get_mem_usage()
         disk_used, disk_total, disk_pct = get_root_disk_usage()
-        uptime = get_uptime_short()
 
-        lines = page_network(title, iface, status, ip_text, now, ssid) if page == 0 else \
-                page_system(title, load1, temp_c, ram_pct, disk_pct, ram_used, ram_total, disk_used, disk_total, uptime)
+        if page == 0:
+            lines = page1_network(title, iface, status, ip_text, ssid, now)
+        elif page == 1:
+            lines = page2_system(title, load1, temp_c, uptime, ram_pct, disk_pct)
+        else:
+            lines = page3_details(title, ram_used, ram_total, disk_used, disk_total)
 
-        draw_lines(device, font, lines)
+        draw_page(device, font, lines, LINE_H)
         time.sleep(REFRESH_SECONDS)
 
 
