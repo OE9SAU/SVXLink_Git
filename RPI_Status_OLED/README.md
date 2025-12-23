@@ -42,8 +42,6 @@ sudo rm -f /etc/systemd/system/oled-sh1106.service
 
 sudo systemctl daemon-reload
 
-sudo systemctl reset-failed oled-sh1106.service
-
 3) Python-Skript löschen
 
 Standardpfad (User pi):
