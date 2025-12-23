@@ -43,8 +43,7 @@ Deinstallation (alles rückgängig machen)
 
 1) Service stoppen und deaktivieren
  ```
-sudo systemctl stop oled-sh1106.service &&
-sudo systemctl disable oled-sh1106.service
+sudo systemctl stop oled-sh1106.service && sudo systemctl disable oled-sh1106.service
  ```
 2) Service-Datei entfernen
  ```
