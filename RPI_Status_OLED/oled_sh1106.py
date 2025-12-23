@@ -181,7 +181,7 @@ def page1_network(title: str, iface: str, status: str, ip_text: str, ssid: Optio
 
 def page2_system(title: str, load1: str, temp_c: Optional[float], uptime: str, ram_pct: str, disk_pct: str) -> list[str]:
     t = f"{temp_c:.0f}C" if temp_c is not None else "-C"
-    l1 = title[:16] + " SYS"
+    l1 = title[:16] + ""
     l2 = f"Temp {t}  L {load1}"
     l3 = f"RAM {ram_pct}  SD {disk_pct}"
     l4 = f"Up {uptime}"
@@ -189,7 +189,7 @@ def page2_system(title: str, load1: str, temp_c: Optional[float], uptime: str, r
 
 
 def page3_details(title: str, ram_used: str, ram_total: str, disk_used: str, disk_total: str) -> list[str]:
-    l1 = title[:16] + " DET"
+    l1 = title[:16] + ""
     l2 = f"RAM {ram_used}/{ram_total}"
     l3 = f"SD  {disk_used}/{disk_total}"
     l4 = ""
