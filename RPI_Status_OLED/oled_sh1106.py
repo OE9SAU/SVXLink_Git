@@ -11,7 +11,122 @@ from typing import Optional, Iterable, Tuple
 from luma.core.interface.serial import i2c
 from luma.oled.device import sh1106
 from luma.core.render import canvas
-from PIL import ImageFont
+from PIL import Image, ImageFont
+
+
+def icon_from_rows(rows: list[str]) -> Image.Image:
+    """Erzeugt ein 1-bit Icon aus '0/1' Zeilen."""
+    h = len(rows)
+    w = len(rows[0])
+    im = Image.new("1", (w, h), 0)
+    px = im.load()
+    for y, row in enumerate(rows):
+        for x, ch in enumerate(row):
+            px[x, y] = 1 if ch == "1" else 0
+    return im
+
+
+# 12×12 Icons (optisch “ruhiger” als 8×8)
+ICONS = {
+    "clock": icon_from_rows([
+        "000011110000",
+        "000100001000",
+        "001000000100",
+        "010000000010",
+        "010001100010",
+        "010000100010",
+        "010000000010",
+        "010000000010",
+        "001000000100",
+        "000100001000",
+        "000011110000",
+        "000000000000",
+    ]),
+    "ip": icon_from_rows([
+        "001111111100",
+        "010000000010",
+        "010111101010",
+        "010100101010",
+        "010100101010",
+        "010111101010",
+        "010000000010",
+        "010010010010",
+        "010111111010",
+        "010000000010",
+        "001111111100",
+        "000000000000",
+    ]),
+    "wifi": icon_from_rows([
+        "000000000000",
+        "000111111000",
+        "001000000100",
+        "010011110010",
+        "000100001000",
+        "001001100100",
+        "000010000000",
+        "000100100000",
+        "000001000000",
+        "000001000000",
+        "000000000000",
+        "000000000000",
+    ]),
+    "lan": icon_from_rows([
+        "000001000000",
+        "000001000000",
+        "000001000000",
+        "001111111100",
+        "010000000010",
+        "010011110010",
+        "010010010010",
+        "010011110010",
+        "010000000010",
+        "001111111100",
+        "000001000000",
+        "000000000000",
+    ]),
+    "temp": icon_from_rows([
+        "000001110000",
+        "000010001000",
+        "000010001000",
+        "000010001000",
+        "000010001000",
+        "000010001000",
+        "000010001000",
+        "000010001000",
+        "000011011000",
+        "000010001000",
+        "000001110000",
+        "000000000000",
+    ]),
+    "ram": icon_from_rows([
+        "001111111100",
+        "010000000010",
+        "010111111010",
+        "010100001010",
+        "010101101010",
+        "010101101010",
+        "010100001010",
+        "010111111010",
+        "010000000010",
+        "001111111100",
+        "000101010000",
+        "000000000000",
+    ]),
+    "sd": icon_from_rows([
+        "000011111000",
+        "000111111100",
+        "001100000110",
+        "001011110110",
+        "001010010110",
+        "001011110110",
+        "001100000110",
+        "001100000110",
+        "001111111110",
+        "000111111100",
+        "000011111000",
+        "000000000000",
+    ]),
+}
 
 
 def get_iface_ipv4(ifname: str) -> Optional[str]:
@@ -37,22 +152,18 @@ def iface_up(ifname: str) -> bool:
 
 def pick_iface(preferred: Iterable[str] = ("wlan0", "eth0")) -> str:
     preferred = tuple(preferred)
-
     for ifn in preferred:
         if get_iface_ipv4(ifn):
             return ifn
-
     for ifn in preferred:
         if iface_up(ifn):
             return ifn
-
     return preferred[0]
 
 
 def get_root_disk_usage() -> Tuple[str, str, str]:
     du = shutil.disk_usage("/")
-    used = du.used
-    total = du.total
+    used, total = du.used, du.total
     pct = (used / total) * 100 if total else 0.0
 
     def fmt_bytes(n: float) -> str:
@@ -132,60 +243,65 @@ def get_wlan_ssid() -> Optional[str]:
 
 
 def get_uptime_short() -> str:
-    """Uptime kurz wie '1d 03:12'."""
     try:
         with open("/proc/uptime", "r", encoding="utf-8") as f:
             seconds = int(float(f.read().split()[0]))
         days, rem = divmod(seconds, 86400)
         hours, rem = divmod(rem, 3600)
         mins, _ = divmod(rem, 60)
-        if days > 0:
-            return f"{days}d {hours:02d}:{mins:02d}"
-        return f"{hours:02d}:{mins:02d}"
+        return f"{days}d {hours:02d}:{mins:02d}" if days > 0 else f"{hours:02d}:{mins:02d}"
     except Exception:
         return "?"
 
 
-def draw_lines(device, font, lines) -> None:
+def draw_lines(device, font, lines_with_icons) -> None:
+    """
+    lines_with_icons: list[tuple[icon_key_or_None, text]]
+    12×12 Icon + Abstand => Text ab x=14.
+    """
     with canvas(device) as draw:
         y = 0
-        for line in lines[:6]:
-            draw.text((0, y), line[:21], font=font, fill=255)
+        for icon_key, text in lines_with_icons[:6]:
+            x = 0
+            if icon_key:
+                draw.bitmap((0, y), ICONS[icon_key], fill=255)
+                x = 14
+            draw.text((x, y + 1), text[:20], font=font, fill=255)  # +1 für bessere Baseline
             y += 10
 
 
-def page_network(title: str, iface: str, status: str, ip_text: str, now: str, ssid: Optional[str]) -> list[str]:
-    lines = [
-        title,
-        f"{iface}:{status}  {now}",
-        f"IP {ip_text}",
-        f"SSID {ssid}" if ssid else "SSID -",
-        "",  # Reserve
-        "Page 1/2",
+def page_network(title: str, iface: str, status: str, ip_text: str, now: str, ssid: Optional[str]):
+    net_icon = "wifi" if iface == "wlan0" else "lan"
+    return [
+        (None,  title),
+        (net_icon, f"{iface}:{status}  {now}"),
+        ("ip",  f"{ip_text}"),
+        ("wifi", f"{ssid}" if ssid else "SSID -"),
+        (None,  ""),
+        (None,  "Page 1/2"),
     ]
-    return lines
 
 
 def page_system(title: str, load1: str, temp_c: Optional[float], ram_pct: str, disk_pct: str,
-                ram_used: str, ram_total: str, disk_used: str, disk_total: str, uptime: str) -> list[str]:
+                ram_used: str, ram_total: str, disk_used: str, disk_total: str, uptime: str):
     t = f"{temp_c:.0f}C" if temp_c is not None else "-C"
-    lines = [
-        title,
-        f"Load {load1}  Temp {t}"[:21],
-        f"RAM {ram_pct}  SD {disk_pct}"[:21],
-        f"RAM {ram_used}/{ram_total}"[:21],
-        f"SD  {disk_used}/{disk_total}"[:21],
-        f"Up  {uptime}  Page 2/2"[:21],
+    return [
+        (None,   title),
+        ("temp", f"Temp {t}  Load {load1}"),
+        ("ram",  f"RAM {ram_pct}  {ram_used}/{ram_total}"),
+        ("sd",   f"SD  {disk_pct}  {disk_used}/{disk_total}"),
+        ("clock", f"Up  {uptime}"),
+        (None,   "Page 2/2"),
     ]
-    return lines
 
 
 def main() -> None:
     I2C_PORT = 1
     I2C_ADDRESS = 0x3C
     ROTATE = 0
-    REFRESH_SECONDS = 1        # Refresh der Messwerte
-    PAGE_SECONDS = 5           # Wie lange eine Seite angezeigt wird
+
+    REFRESH_SECONDS = 1   # Messwerte/Refresh
+    PAGE_SECONDS = 5      # Seitenwechsel
 
     serial = i2c(port=I2C_PORT, address=I2C_ADDRESS)
     device = sh1106(serial, rotate=ROTATE)
@@ -197,36 +313,30 @@ def main() -> None:
     last_switch = time.monotonic()
 
     while True:
-        # Seite umschalten
         now_mono = time.monotonic()
         if now_mono - last_switch >= PAGE_SECONDS:
             page = (page + 1) % 2
             last_switch = now_mono
 
-        # Netzwerkwerte
         iface = pick_iface(("wlan0", "eth0"))
         ip = get_iface_ipv4(iface)
         is_up = bool(ip) or iface_up(iface)
+
         status = "UP" if is_up else "DOWN"
         ip_text = ip if ip else "no IP"
         now = datetime.now().strftime("%H:%M:%S")
         ssid = get_wlan_ssid() if iface == "wlan0" else None
 
-        # Systemwerte
         load1 = get_load1()
         temp_c = get_cpu_temp_c()
         ram_used, ram_total, ram_pct = get_mem_usage()
         disk_used, disk_total, disk_pct = get_root_disk_usage()
         uptime = get_uptime_short()
 
-        if page == 0:
-            lines = page_network(title, iface, status, ip_text, now, ssid)
-        else:
-            lines = page_system(title, load1, temp_c, ram_pct, disk_pct,
-                                ram_used, ram_total, disk_used, disk_total, uptime)
+        lines = page_network(title, iface, status, ip_text, now, ssid) if page == 0 else \
+                page_system(title, load1, temp_c, ram_pct, disk_pct, ram_used, ram_total, disk_used, disk_total, uptime)
 
         draw_lines(device, font, lines)
-
         time.sleep(REFRESH_SECONDS)
 
 
