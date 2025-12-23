@@ -79,5 +79,12 @@ sudo systemctl status shari_aprs.service
 
 # Rpi OLED Status Display
 
+Installation (Raspberry Pi OS)
+
+```
+curl -fsSL https://raw.githubusercontent.com/DEIN_GITHUB_USER/oled-ip-sh1106/main/install.sh | sudo bash
+```
+Nach dem Reboot zeigt das OLED automatisch den LAN-Status und die IP-Adresse an.
+
 
 
