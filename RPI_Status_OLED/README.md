@@ -13,7 +13,7 @@ curl … | sudo bash
 
 Prüfen Sie den Inhalt vorab:
  ```
-curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | less
+curl -fsSL curl -fsSL https://raw.githubusercontent.com/OE9SAU/RPI_Status_OLED/main/install.sh | less | less
  ```
 Voraussetzungen
 ---------------
