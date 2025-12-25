@@ -7,7 +7,7 @@
 # Anzeigename:
 #   None  -> Hostname verwenden
 #   "..." -> eigener Name
-DISPLAY_NAME = None           # z.B. "SVXLink AT"
+DISPLAY_NAME = "OE9GTV - PI"           # z.B. "SVXLink AT"
 
 # Schrift / Layout
 FONT_SIZE = 12                # empfohlen: 11–12 für 128x64
