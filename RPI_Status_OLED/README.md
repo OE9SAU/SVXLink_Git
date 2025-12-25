@@ -36,7 +36,7 @@ Nach der Installation:
 USER CONFIGURATION 
 ---------------------
 Im Script "oled_sh1106.py" können in den Zeilen 10 bis 26, USER Configurationen vorgenommen werden.
-Wurden Änderungen durchgeführt muss ein Service-Restart erfolgen.
+Wurden Änderungen durchgeführt muss ein Restart der Service-Datei erfolgen.
  ```
 sudo systemctl restart oled-sh1106.service
  ```
