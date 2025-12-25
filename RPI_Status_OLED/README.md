@@ -33,6 +33,14 @@ Nach der Installation:
 - Ein systemd-Service wird eingerichtet
 - Das OLED startet automatisch
 
+USER CONFIGURATION 
+---------------------
+Im Script "oled_sh1106.py" können in den Zeilen 10 bis 26, USER Configurationen vorgenommen werden.
+Wurdne änderungen durchgeführt muss ein Servie Restart erfolgen.
+ ```
+sudo systemctl restart oled-sh1106.service
+ ```
+
 Service-Status prüfen
 ---------------------
  ```
