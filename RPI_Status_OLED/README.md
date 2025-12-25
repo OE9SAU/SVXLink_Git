@@ -80,7 +80,7 @@ sudo apt autoremove -y
 
 Dateien & Services (Übersicht)
 ------------------------------
-Python-Skript:        /home/<user>/oled_sh1106.py
+Python-Skript:        /home/pi/oled_sh1106.py
 
 systemd-Service:     /etc/systemd/system/oled-sh1106.service
 
