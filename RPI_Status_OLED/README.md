@@ -18,8 +18,30 @@ curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/
 Voraussetzungen
 ---------------
 - Raspberry Pi OS (Bullseye / Bookworm)
-- I²C aktiviert (raspi-config)
+- I²C aktiviert (sudo raspi-config)
+ ```
+sudo raspi-config
+ ```
+ ```
+ Interface Options
+ → I2C
+  → Enable
+ ```
 - SH1106 OLED (I²C, Adresse 0x3C)
+ ``` 
+sudo i2cdetect -y 1
+ ``` 
+ ``` 
+        0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    00:                         -- -- -- -- -- -- -- --
+    10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- --
+    40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    70: -- -- -- -- -- -- -- --
+  ```
 - Internetverbindung
 
 Installation (Empfohlen)
