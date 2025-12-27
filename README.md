@@ -86,7 +86,7 @@ https://github.com/OE9SAU/SVXLink_Git/blob/main/RPI_Status_OLED/README.md
 ```
 curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/RPI_Status_OLED/install.sh | sudo bash
 ```
-Das OLED zeigt anhschliessend den LAN-Status und die IP-Adresse an.
+Das OLED zeigt anschliessend den Netzwerkstatus, IP-Adresse, Uhrzeit und System-Daten an
 
 
 
