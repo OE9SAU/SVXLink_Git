@@ -19,7 +19,7 @@ Voraussetzungen
 ---------------
 - Raspberry Pi OS (Bullseye / Bookworm)
 - OLED verdrahtet: GND, VCC(3.3v), SCL(GPIO3/PIN5), SDA(GPIO2/Pin3)
-- I²C aktiviert (sudo raspi-config)
+- I²C aktiviert
  ```
 sudo raspi-config
  ```
