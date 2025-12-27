@@ -18,8 +18,7 @@ curl -fsSL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/
 Voraussetzungen
 ---------------
 - Raspberry Pi OS (Bullseye / Bookworm)
-- OLED verdrahtet
-- <img width="489" height="172" alt="grafik" src="https://github.com/user-attachments/assets/fcba9c18-21f4-410a-a9fa-c01a8285b348" />
+- OLED verdrahtet: GND, VCC(3.3v), SCL(GPIO3/PIN5), SDA(GPIO2/Pin3)
 - I²C aktiviert (sudo raspi-config)
  ```
 sudo raspi-config
