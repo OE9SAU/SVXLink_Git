@@ -1,3 +1,4 @@
+![OLED](OLED.png)
 
 SH1106 OLED Status Display (Raspberry Pi)
 =================================
