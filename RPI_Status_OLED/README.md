@@ -77,8 +77,13 @@ sudo rm -f /etc/systemd/system/oled-sh1106.service && sudo systemctl daemon-relo
 
 Standardpfad (User pi):
  ```
-sudo rm -f /home/pi/oled_sh1106.py
+sudo rm -f /home/<USER>/oled_sh1106.py
  ```
+4) Virtuelle Umgebung entfernen (empfohlen)
+```   
+sudo rm -rf /home/<USER>/.venvs/oled-sh1106
+```
+
 Optional: Python-Abhängigkeiten entfernen
 -----------------------------------------
 Nur ausführen, wenn diese Pakete nicht mehr benötigt werden:
