@@ -84,21 +84,6 @@ sudo rm -f /home/<USER>/oled_sh1106.py
 sudo rm -rf /home/<USER>/.venvs/oled-sh1106
 ```
 
-Optional: Python-Abhängigkeiten entfernen
------------------------------------------
-Nur ausführen, wenn diese Pakete nicht mehr benötigt werden:
- ```
-sudo python3 -m pip uninstall -y luma.oled luma.core
- ```
-Optional: Systempakete entfernen
---------------------------------
- ```
-sudo apt remove -y python3-pip python3-pil python3-smbus i2c-tools
- ```
- ```
-sudo apt autoremove -y
- ```
-
 Dateien & Services (Übersicht)
 ------------------------------
 Python-Skript:        /home/pi/oled_sh1106.py
