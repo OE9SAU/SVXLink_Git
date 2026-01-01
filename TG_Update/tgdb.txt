@@ -1,6 +1,6 @@
 <?php
 /* talkgroup / number alias database */
-/* last update: 28.04.2025 from OE9XFP
+/* last update: 01.01.2026 from OE9XFP
 /* (C) 2022 by Heiko, DL1BZ */
 $tgdb_array = [ 
 '20' => 'Test TG',
