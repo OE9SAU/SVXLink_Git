@@ -12,7 +12,7 @@ cd /var/www/html/include && \
 sudo ./tgdb_update.sh
  ```
 
-# SVXLink Remote Display» 
+# SVXLink Remote Display
 with ESP and LCD, see documentation [here](svxlink_remote_display/Svxlink_Remote_Display.pdf)
 
 with M5Stack, see documentation [here](M5stack_svxlink_remote_display), please contact DL5RD for further details 
