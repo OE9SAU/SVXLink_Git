@@ -1,3 +1,17 @@
+# TG_Update:
+
+**Backup command (safely backs up old files, if they exist):**
+ ```
+sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh_back
+ ```
+**Download and run the new script:**
+ ```
+sudo wget -O /var/www/html/include/tgdb_update.sh https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/TG_Update/tgdb_update.sh && \
+sudo chmod +x /var/www/html/include/tgdb_update.sh && \
+cd /var/www/html/include && \
+sudo ./tgdb_update.sh
+ ```
+
 # SVXLink Remote Display» 
 with ESP and LCD, see documentation [here](svxlink_remote_display/Svxlink_Remote_Display.pdf)
 
@@ -18,21 +32,6 @@ sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php_back && sudo c
 **Download the fixed version of the file**
  ```
 sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi/index.php && sudo wget -O /var/www/html/wifi.php https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/shari_dashboard/wifi.php
- ```
-
-
-# TG_Update:
-
-**Backup command (safely backs up old files, if they exist):**
- ```
-sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh_back
- ```
-**Download and run the new script:**
- ```
-sudo wget -O /var/www/html/include/tgdb_update.sh https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/TG_Update/tgdb_update.sh && \
-sudo chmod +x /var/www/html/include/tgdb_update.sh && \
-cd /var/www/html/include && \
-sudo ./tgdb_update.sh
  ```
 
 # SHARI goes APRS:
