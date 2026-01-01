@@ -25,8 +25,7 @@ sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9S
 
 **Backup command (safely backs up old files, if they exist):**
  ```
-sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh.bak && 
-sudo cp /var/www/html/include/tgdb.txt /var/www/html/include/tgdb.txt.bak
+sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh_bak
  ```
 **Download and run the new script:**
  ```
