@@ -12,7 +12,7 @@ The original version of the code may have some permission issues. To get it work
 
 **Backup the original file**
  ```
-sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php_back
+sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php_back && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php_back
  ```
 
 **Download the fixed version of the file**
