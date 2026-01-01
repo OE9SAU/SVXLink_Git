@@ -12,7 +12,7 @@ The original version of the code may have some permission issues. To get it work
 
 **Backup the original file**
  ```
-sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php.bak
+sudo cp /var/www/html/wifi/index.php /var/www/html/wifi/index.php.bak && sudo cp /var/www/html/wifi.php /var/www/html/wifi.php_back
  ```
 
 **Download the fixed version of the file**
@@ -25,7 +25,7 @@ sudo wget -O /var/www/html/wifi/index.php https://raw.githubusercontent.com/OE9S
 
 **Backup command (safely backs up old files, if they exist):**
  ```
-sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh_bak
+sudo cp /var/www/html/include/tgdb_update.sh /var/www/html/include/tgdb_update.sh_back
  ```
 **Download and run the new script:**
  ```
