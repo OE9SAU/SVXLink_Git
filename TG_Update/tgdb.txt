@@ -5,7 +5,7 @@
 $tgdb_array = [ 
 '20' => 'Test TG',
 '25' => 'OE Jugendrunde',
-'1262' => 'TG Rundspruch',
+'1262' => 'Rundspruch TG',
 '2280' => 'Schweiz TG',
 '232' => 'Austria TG',
 '262' => 'Deutschland TG',
