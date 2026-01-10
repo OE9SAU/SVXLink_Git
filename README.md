@@ -1,3 +1,11 @@
+# update-system.sh
+
+Führt ein normales Systemupdate (apt update + apt upgrade) durch und stellt anschließend sicher, 
+
+dass Apache wieder mit PrivateTmp=false läuft. Was für die Funktion von DTMF und Co benötigt wird!
+
+https://github.com/OE9SAU/SAULink9/tree/main/Scripte
+
 # TG_Update:
 
 **Backup command (safely backs up old files, if they exist):**
