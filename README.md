@@ -1,4 +1,4 @@
-# update-system.sh
+# Systemupdate für Rasberry mit SVXLink / SAULINK
 
 Führt ein normales Systemupdate (apt update + apt upgrade) durch und stellt anschließend sicher, 
 
