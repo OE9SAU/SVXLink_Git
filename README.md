@@ -4,7 +4,7 @@ Führt ein normales Systemupdate (apt update + apt upgrade) durch und stellt ans
 
 dass Apache wieder mit PrivateTmp=false läuft. Was für die Funktion von DTMF und Co benötigt wird!
 
-https://github.com/OE9SAU/SAULink9/tree/main/Scripte
+https://github.com/OE9SAU/SAULink9/tree/main/Scripts
 
 # TG_Update:
 
