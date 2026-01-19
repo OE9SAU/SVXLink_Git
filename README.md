@@ -1,3 +1,11 @@
+# Systemupdate für Rasberry mit SVXLink bzw. SAULINK
+
+Führt ein normales Systemupdate (apt update + apt upgrade) durch und stellt anschließend sicher, 
+
+dass Apache wieder mit PrivateTmp=false läuft. Was für die Funktion von DTMF und Co benötigt wird!
+
+https://github.com/OE9SAU/SAULink9/tree/main/Scripts
+
 # TG_Update:
 
 **Backup command (safely backs up old files, if they exist):**
