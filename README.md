@@ -1,4 +1,6 @@
-                            ![logo](SVXLink_Austria_Logo_klein.png)
+<p align="center">
+  <img width="300" height="300" src="SVXLink_Austria_Logo.png">
+</p>
 
 # Systemupdate für Rasberry mit SVXLink bzw. SAULINK
 
