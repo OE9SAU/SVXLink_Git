@@ -1,4 +1,4 @@
-![logo](SVXLink_Austria_Logo.png)
+![logo](SVXLink_Austria_Logo_klein.png)
 # Systemupdate für Rasberry mit SVXLink bzw. SAULINK
 
 Führt ein normales Systemupdate (apt update + apt upgrade) durch und stellt anschließend sicher, 
