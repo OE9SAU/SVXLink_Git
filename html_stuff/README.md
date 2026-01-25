@@ -1,6 +1,12 @@
-# Icon-Update für SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
+# Icon und Favicon Update SVXLink Austria
 
-## Dieses Kommando aktualisiert die Dateien favicon.ico und svxlink.ico im Verzeichnis/var/www/html/images.
+<p align="center">
+  <img width="100" height="500" src="svxlink.ico">
+</p>
+
+![Fav](favicon.ico)
+
+## Dieses Kommando aktualisiert die Dateien favicon.ico und svxlink.ico im Verzeichnis/var/www/html/images für SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
 
 ### Bestehende Dateien werden vor dem Überschreiben gesichert (*_orig.ico)
 
