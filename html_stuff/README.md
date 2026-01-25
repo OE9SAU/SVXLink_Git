@@ -11,9 +11,8 @@
 
 Dieses Kommando kopiert das neue favicon.ico und svxlink.ico ins Verzeichnis/var/www/html/images
 
-für das SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
-
-### Bestehende Dateien werden vor dem Überschreiben gesichert (*_orig.ico)
+## Voraussetzung:
+SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
 
 ```
 cd /var/www/html/images && \
@@ -23,3 +22,4 @@ sudo curl -fL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/ma
 sudo curl -fL https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/refs/heads/main/html_stuff/svxlink.ico -o svxlink.ico && \
 sudo chmod 644 favicon.ico svxlink.ico
 ```
+#### Bestehende Dateien werden vor dem Überschreiben gesichert (*_orig.ico)
