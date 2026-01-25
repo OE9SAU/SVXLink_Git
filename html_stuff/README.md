@@ -9,9 +9,9 @@
 </p>
 
 
-Dieses Kommando kopiert das neue favicon.ico und svxlink.ico im Verzeichnis/var/www/html/images
+Dieses Kommando kopiert das neue favicon.ico und svxlink.ico ins Verzeichnis/var/www/html/images
 
-für SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
+für das SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
 
 ### Bestehende Dateien werden vor dem Überschreiben gesichert (*_orig.ico)
 
