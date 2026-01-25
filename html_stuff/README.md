@@ -1,4 +1,4 @@
-# Icon- und Favicon-Aktualisierung – SVXLink Austria
+# Icon- und Favicon-Aktualisierung von SVXLink Austria
 
 <p align="left">
   <img width="100" height="500" src="svxlink.ico">
