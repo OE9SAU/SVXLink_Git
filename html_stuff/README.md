@@ -1,15 +1,8 @@
 # Icon-Update für SvxLink Dashboard Ver 2.1 © G4NAB, SP2ONG, SP0DZ 2021-2026
 
-Dieses Kommando aktualisiert die Dateien favicon.ico und svxlink.ico im Verzeichnis
-/var/www/html/images.
+## Dieses Kommando aktualisiert die Dateien favicon.ico und svxlink.ico im Verzeichnis/var/www/html/images.
 
-Ablauf
-
-Bestehende Dateien werden vor dem Überschreiben gesichert (*_orig.ico)
-
-Aktuelle Versionen werden direkt aus GitHub geladen
-
-Dateirechte werden korrekt gesetzt (644)
+### Bestehende Dateien werden vor dem Überschreiben gesichert (*_orig.ico)
 
 ```
 cd /var/www/html/images && \
