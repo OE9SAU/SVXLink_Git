@@ -1,8 +1,12 @@
 # SVXLink Austria Logo
 
-<p align="center">
-  <img width="300" height="300" src="SVXLink_Austria_Logo.png">
+<p align="left">
+  <img width="150" height="150" src="SVXLink_Austria_Logo.png">
 </p>
+
+# Icon- und Favicon-Aktualisierung von SVXLink Austria
+
+https://github.com/OE9SAU/SVXLink_Git/tree/main/html_stuff
 
 # Systemupdate für Rasberry mit SVXLink bzw. SAULINK
 
