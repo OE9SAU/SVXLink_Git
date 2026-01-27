@@ -85,6 +85,8 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
  ```
+
+ ```
 sudo systemctl daemon-reload
 
 sudo systemctl enable shari_aprs.service
@@ -92,7 +94,7 @@ sudo systemctl enable shari_aprs.service
 sudo systemctl restart shari_aprs.service
 
 sudo systemctl status shari_aprs.service
-
+ ```
 # Rpi OLED Status Display
 
 Sicherheitshinweis, der Installer wird mit Root-Rechten ausgeführt, mehr Infos im README
