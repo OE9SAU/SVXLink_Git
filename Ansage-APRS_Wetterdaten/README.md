@@ -76,22 +76,7 @@ source /tmp/wx_oe9xvi.tcl
 
 ## 🔊 Sprachfiles (WxNatural)
 
-Aktuelle_Wetterdaten_von
-Stand
-Die_Temperatur_betraegt
-bei_einer_Luftfeuchte_von
-Der_Luftdruck_betraegt
-und_ist_steigend
-und_ist_fallend
-und_ist_gleichbleibend
-Der_Wind_kommt_aus
-und_weht_mit
-Es_herrscht_Windstille
-In_Boen_bis_zu
-Aktuell_kein_Niederschlag
-Niederschlag_in_der_letzten_Stunde
-Niederschlag_letzten_24h
-Ende_der_Wetterdurchsage
+Ordner "WxNatural" nach /usr/share/svxlink/sounds/de_DE kopieren bzw. wo auch immer Eure Sprachfiles liegen
 
 ---
 
