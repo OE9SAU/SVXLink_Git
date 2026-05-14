@@ -106,12 +106,13 @@ sudo chown $USER:$USER /tmp/wx_pressure_last.txt
 ```
 ---
 
-## 🚀 Cronjob alle 10min
+## 🚀 Cronjob, alle 10min werden die Wetterdaten aktualisiert
 ```
 crontab -e
 ```
+```
 2-59/10 * * * * /usr/bin/perl /opt/wx_aprs_wxnatural.pl
-
+```
 ---
 
 ## 🧪 Test
