@@ -49,6 +49,7 @@ sudo chmod +x /opt/wx_aprs_wxnatural.pl
 Im Script folgende Werte anpassen:
 
 my $call   = "YOUR WX-CALL";
+
 my $apikey = "YOUR WX-CALL_API_KEY";
 
 APRS API-Key:
