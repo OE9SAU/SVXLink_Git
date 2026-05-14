@@ -27,21 +27,22 @@ System:
 - SVXLink installiert und funktionsfähig
 
 Benötigte Pakete:
-
+```
 sudo apt update
-sudo apt install perl libwww-perl libxml-simple-perl
 
+sudo apt install perl libwww-perl libxml-simple-perl
+```
 ---
 
 ## 📥 Installation
-
+```
 cd /opt
 sudo nano wx_aprs_wxnatural.pl
 
 Script einfügen und speichern:
 
 sudo chmod +x /opt/wx_aprs_wxnatural.pl
-
+```
 ---
 
 ## 🔧 Konfiguration
@@ -58,9 +59,9 @@ https://aprs.fi/page/api
 ---
 
 ## ▶️ Manuell starten
-
+```
 perl /opt/wx_aprs_wxnatural.pl
-
+```
 Erzeugt:
 
 /tmp/wx_oe9xvi.tcl
@@ -68,9 +69,9 @@ Erzeugt:
 ---
 
 ## 📢 Einbindung in SVXLink
-
+```
 source /tmp/wx_oe9xvi.tcl
-
+```
 ---
 
 ## 🔊 Sprachfiles (WxNatural)
@@ -115,23 +116,23 @@ Ende_der_Wetterdurchsage
 ---
 
 ## 🔒 Berechtigungsproblem
-
+```
 sudo chown $USER:$USER /tmp/wx_pressure_last.txt
-
+```
 ---
 
 ## 🚀 Cronjob
-
+```
 crontab -e
-
+```
 */5 * * * * /usr/bin/perl /opt/wx_aprs_wxnatural.pl
 
 ---
 
 ## 🧪 Test
-
+```
 cat /tmp/wx_oe9xvi.tcl
-
+```
 ---
 
 ## 🧠 Fazit
