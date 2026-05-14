@@ -36,11 +36,11 @@ sudo apt install perl libwww-perl libxml-simple-perl
 
 ## 📥 Installation
 ```
-cd /opt
+cd /opt &&
 sudo nano wx_aprs_wxnatural.pl
-
+```
 Script einfügen und speichern:
-
+```
 sudo chmod +x /opt/wx_aprs_wxnatural.pl
 ```
 ---
@@ -106,11 +106,11 @@ sudo chown $USER:$USER /tmp/wx_pressure_last.txt
 ```
 ---
 
-## 🚀 Cronjob
+## 🚀 Cronjob alle 10min
 ```
 crontab -e
 ```
-*/5 * * * * /usr/bin/perl /opt/wx_aprs_wxnatural.pl
+2-59/10 * * * * /usr/bin/perl /opt/wx_aprs_wxnatural.pl
 
 ---
 
