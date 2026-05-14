@@ -1,20 +1,78 @@
 # 📡 SVXLink APRS Wetteransage Script
+
+## 🧾 Beschreibung
+
+Dieses Perl-Script ruft aktuelle Wetterdaten von **aprs.fi** ab und erzeugt eine **SVXLink-kompatible TCL-Datei**, die eine automatische Sprachansage für ein Relais oder Gateway bereitstellt.
+
+Die Ausgabe ist für den Amateurfunk optimiert und verwendet eine klare, verständliche Sprache.
+
+---
+
+## 📊 Funktionen
+
+- 🌡 Temperatur (inkl. Dezimalwerte)
+- 💧 Luftfeuchtigkeit
+- 📉 Luftdruck inkl. Trend (steigend / fallend / gleichbleibend)
+- 🌬 Windrichtung, Geschwindigkeit und Böen
+- 🌧 Niederschlag (aktuell + letzte 24 Stunden)
+- 🔊 Direkte Ausgabe für SVXLink
+
+---
+
+## ⚙️ Voraussetzungen
+
+System:
+
+- Debian / Ubuntu / Raspberry Pi OS
+- SVXLink installiert und funktionsfähig
+
+Benötigte Pakete:
+
+sudo apt update
+sudo apt install perl libwww-perl libxml-simple-perl
+
+---
+
+## 📥 Installation
+
+cd /opt
+sudo nano wx_aprs_wxnatural.pl
+
+Script einfügen und speichern:
+
+sudo chmod +x /opt/wx_aprs_wxnatural.pl
+
+---
+
+## 🔧 Konfiguration
+
+Im Script folgende Werte anpassen:
+
+my $call   = "OE9XVI-6";
+my $apikey = "DEIN_API_KEY";
+
+APRS API-Key:
+https://aprs.fi/page/api
+
+---
+
+## ▶️ Manuell starten
+
 perl /opt/wx_aprs_wxnatural.pl
 
-Das Script erzeugt:
+Erzeugt:
 
 /tmp/wx_oe9xvi.tcl
-📢 Einbindung in SVXLink
 
-Die erzeugte Datei in SVXLink einbinden:
+---
+
+## 📢 Einbindung in SVXLink
 
 source /tmp/wx_oe9xvi.tcl
 
-z.B. in einem Event oder Modul.
+---
 
-🔊 Sprachfiles (WxNatural)
-
-Folgende Sprachbausteine werden benötigt:
+## 🔊 Sprachfiles (WxNatural)
 
 Aktuelle_Wetterdaten_von
 Stand
@@ -32,51 +90,57 @@ Aktuell_kein_Niederschlag
 Niederschlag_in_der_letzten_Stunde
 Niederschlag_letzten_24h
 Ende_der_Wetterdurchsage
-📊 Logik
-🌧 Niederschlag
-Aktueller Niederschlag (1h) wird separat angesagt
-Niederschlag der letzten 24 Stunden wird immer zusätzlich ausgegeben
 
-Beispiel:
+---
 
-Aktuell kein Niederschlag.
-Niederschlag letzten 24 Stunden 0 Komma 5 Millimeter.
-📉 Luftdrucktrend
-+1 hPa oder mehr → steigend
--1 hPa oder mehr → fallend
-sonst → gleichbleibend
-🌬 Wind
-< 5 km/h → Windstille
-Böen werden nur angesagt, wenn relevant
-🔒 Berechtigungsproblem beheben
+## 📊 Logik
 
-Falls folgende Meldung erscheint:
+### 🌧 Niederschlag
 
-Permission denied: /tmp/wx_pressure_last.txt
+- 1h → aktueller Niederschlag
+- 24h → immer zusätzliche Ausgabe
 
-Fix:
+### 📉 Luftdrucktrend
+
+- +1 hPa → steigend
+- -1 hPa → fallend
+- sonst → gleichbleibend
+
+### 🌬 Wind
+
+- < 5 km/h → Windstille
+- Böen nur wenn relevant
+
+---
+
+## 🔒 Berechtigungsproblem
 
 sudo chown $USER:$USER /tmp/wx_pressure_last.txt
-🚀 Automatisierung (Cronjob)
 
-Script regelmäßig ausführen lassen:
+---
+
+## 🚀 Cronjob
 
 crontab -e
 
-Beispiel: alle 5 Minuten
-
 */5 * * * * /usr/bin/perl /opt/wx_aprs_wxnatural.pl
-🧪 Test
 
-Erzeugte Datei prüfen:
+---
+
+## 🧪 Test
 
 cat /tmp/wx_oe9xvi.tcl
-💡 Hinweise
-SVXLink spricht Dezimalzahlen automatisch („Komma“)
-Keine Rundung bei Regenwerten notwendig
-Script ist für Dauerbetrieb ausgelegt
-🧠 Fazit
-✔ Einfache Integration in SVXLink
-✔ Automatische Wetteransagen
-✔ Optimiert für Relaisbetrieb
-✔ Saubere und verständliche Sprache
+
+---
+
+## 🧠 Fazit
+
+✔ Automatische Wetteransage  
+✔ Für SVXLink optimiert  
+✔ Einfache Installation  
+
+---
+
+## 📜 Lizenz
+
+Freie Nutzung für Amateurfunk-Projekte.
