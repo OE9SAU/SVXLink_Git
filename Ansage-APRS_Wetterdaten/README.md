@@ -35,11 +35,12 @@ sudo apt install perl libwww-perl libxml-simple-perl
 ---
 
 ## 📥 Installation
+Script einfügen:
 ```
 cd /opt &&
 sudo nano wx_aprs_wxnatural.pl
 ```
-Script einfügen und speichern:
+Rechte anpassen:
 ```
 sudo chmod +x /opt/wx_aprs_wxnatural.pl
 ```
@@ -66,12 +67,6 @@ Erzeugt:
 
 /tmp/wx_oe9xvi.tcl
 
----
-
-## 📢 Einbindung in SVXLink
-```
-source /tmp/wx_oe9xvi.tcl
-```
 ---
 
 ## 🔊 Sprachfiles (WxNatural)
@@ -106,12 +101,18 @@ sudo chown $USER:$USER /tmp/wx_pressure_last.txt
 ```
 ---
 
-## 🚀 Cronjob, alle 10min werden die Wetterdaten aktualisiert
+## 🚀 Cronjob einrichten, alle 10min werden die Wetterdaten aktualisiert
 ```
 crontab -e
 ```
 ```
 2-59/10 * * * * /usr/bin/perl /opt/wx_aprs_wxnatural.pl
+```
+---
+
+## Logic.tcl anpassen für Wetterdatenabrufen mit DTMF 27# 
+```
+Copy / Paste Logic.tcl
 ```
 ---
 
