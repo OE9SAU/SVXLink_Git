@@ -1,9 +1,9 @@
-############################
-#SVXLink APRS Wetteransage Script
-#v1.0 OE9SAU 07/2026
-############################
-
 #!/usr/bin/perl
+
+########################################
+# SVXLink APRS Wetteransage Script
+# v1.0 - OE9SAU - 07/2026
+########################################
 
 use strict;
 use warnings;
