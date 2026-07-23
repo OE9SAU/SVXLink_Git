@@ -1,7 +1,7 @@
 # 📡 SVXLink APRS Wetteransage Script
 Dieses Perl-Script ruft aktuelle Wetterdaten von Deiner Wetterstation via **aprs.fi** ab,
 
-und erzeugt eine **SVXLink-kompatible TCL-Datei**, die eine automatische Sprachansage für ein Relais oder Gateway bereitstellt.
+und erzeugt eine **SVXLink-kompatible TCL-Datei**, das eine Sprachansage für ein Relais bereitstellt.
 
 # SVXLink Austria Logo
 
