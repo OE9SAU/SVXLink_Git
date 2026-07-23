@@ -122,14 +122,6 @@ cat /tmp/wx_oe9xvi.tcl
 ```
 ---
 
-## 🧠 Fazit
-
-✔ Automatische Wetteransage  
-✔ Für SVXLink optimiert  
-✔ Einfache Installation  
-
----
-
 ## 📜 Lizenz
 
 Freie Nutzung für Amateurfunk-Projekte.
