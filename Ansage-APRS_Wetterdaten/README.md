@@ -1,4 +1,4 @@
-# 📡 SVXLink APRS Wetteransage Script
+# SVXLink APRS Wetteransage Script
 
 ## 🧾 Beschreibung
 
