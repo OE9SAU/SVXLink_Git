@@ -1,10 +1,11 @@
 <?php
 /* talkgroup / number alias database */
-/* last update: 01.01.2026 from OE9XFP
+/* last update: 12.08.2026 from OE9XFP
 /* (C) 2022 by Heiko, DL1BZ */
 $tgdb_array = [ 
 '20' => 'Test TG',
 '25' => 'OE Jugendrunde',
+'313' => 'IG Afu im WoMo',
 '1232' => 'OE Rundspruch',
 '1262' => 'Deutschland Rundspruch',
 '2280' => 'Schweiz TG',
