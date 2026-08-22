@@ -3,6 +3,7 @@
 ########################################
 # SVXLink APRS Wetteransage Script
 # v1.0 - OE9SAU - 07/2026
+# v1.1 - OE9SAU - add 24h rain - 08/2026
 ########################################
 
 use strict;
@@ -104,8 +105,9 @@ my $pressure=int($wx->{pressure}//0);
 
 my $wind = int((($wx->{wind_speed}//0) * 3.6) + 0.5);
 my $gust = int((($wx->{wind_gust}//0) * 3.6) + 0.5);
-my $rain_1 = $wx->{rain_1h} // 0;
-my $rain_24 = $wx->{rain_24h} // 0;
+
+my $rain   = sprintf("%.1f", $wx->{rain_1h}//0);
+my $rain24 = sprintf("%.1f", $wx->{rain_24h}//0);
 
 my $dir=int($wx->{wind_direction}//0);
 my $timestamp=$wx->{time}//time;
@@ -253,28 +255,37 @@ else{
 # Niederschlag
 ############################
 
-############################
-# Niederschlag
-############################
+if ($rain > 0) {
 
-if($rain_1 > 0){
-
+    # Regen letzte Stunde
     print $WX "playMsg \"WxNatural\" \"Niederschlag_in_der_letzten_Stunde\";\n";
-    print $WX "playNumber $rain_1;\n";
+    print $WX "playNumber $rain;\n";
+    print $WX "playMsg \"MetarInfo\" \"unit_mm\";\n";
+
+    # Regen letzte 24 Stunden
+    if ($rain24 > 0) {
+        print $WX "playMsg \"WxNatural\" \"Niederschlag_letzten_24h\";\n";
+        print $WX "playNumber $rain24;\n";
+        print $WX "playMsg \"MetarInfo\" \"unit_mm\";\n";
+    }
+
+}
+elsif ($rain24 > 0) {
+
+    # Momentan trocken, aber innerhalb der letzten 24h Regen
+    print $WX "playMsg \"WxNatural\" \"Aktuell_wurde_kein_Niederschlag_gemessen\";\n";
+
+    print $WX "playMsg \"WxNatural\" \"Niederschlag_letzten_24h\";\n";
+    print $WX "playNumber $rain24;\n";
     print $WX "playMsg \"MetarInfo\" \"unit_mm\";\n";
 
 }
-else{
+else {
 
-    print $WX "playMsg \"WxNatural\" \"Aktuell_kein_Niederschlag\";\n";
+    # Weder letzte Stunde noch letzte 24h Regen
+    print $WX "playMsg \"WxNatural\" \"Es_wurde_kein_Niederschlag_gemessen\";\n";
 
 }
-
-print $WX "playSilence 200;\n";
-
-print $WX "playNumber $rain_24;\n";
-print $WX "playMsg \"MetarInfo\" \"unit_mm\";\n";
-print $WX "playMsg \"WxNatural\" \"Niederschlag_letzten_24h\";\n";
 
 print $WX "playSilence 300;\n";
 
