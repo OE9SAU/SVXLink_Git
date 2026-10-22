@@ -75,7 +75,7 @@ php -v
 
 Erwartete Version: **PHP 8.2.35**
 
-**Hinweis:** Das Skript ist für Raspbian 12 Bookworm ARMHF vorgesehen. Es installiert PHP für Apache mit `mod_php`. Bestehende PHP-Konfigurationen sollten vorher gesichert werden.
+**Hinweis:** Das Skript ist für Raspbian 12 Bookworm ARMHF vorgesehen. Es installiert PHP für Apache mit `mod_php`.
 
 Alternativ ist die manuelle Installation der DEB-Pakete möglich.
 ## Installation aus GitHub Releases
