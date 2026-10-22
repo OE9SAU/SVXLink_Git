@@ -4,8 +4,8 @@ set -Eeuo pipefail
 
 REPO="OE9SAU/SVXLink_Git"
 TAG="php8.2.35-rpi11"
-VERSION="8.2.35-1~deb12u1+rpi11"
-ASSET_VERSION="${VERSION/\~/.}"
+PHP_VERSION="8.2.35-1~deb12u1+rpi11"
+ASSET_VERSION="${PHP_VERSION/\~/.}"
 BASE_URL="https://github.com/${REPO}/releases/download/${TAG}"
 
 fail() { printf 'FEHLER: %s\n' "$*" >&2; exit 1; }
@@ -53,8 +53,8 @@ info "Prüfe Paket-Metadaten"
 for pkg in "${packages[@]}"; do
   actual_version=$(dpkg-deb -f "$pkg" Version)
 
-  [[ "$actual_version" == "$VERSION" ]] || \
-    fail "Unerwartete Version in $pkg: $actual_version (erwartet: $VERSION)"
+  [[ "$actual_version" == "$PHP_VERSION" ]] || \
+    fail "Unerwartete Version in $pkg: $actual_version (erwartet: $PHP_VERSION)"
 done
 
 info "APT-Installationssimulation"
