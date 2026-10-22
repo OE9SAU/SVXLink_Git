@@ -1,6 +1,3 @@
-
-    
-  
 #!/usr/bin/env bash
 # PHP 8.2.35 for Raspbian 12 Bookworm ARMHF (Apache mod_php)
 set -Eeuo pipefail
