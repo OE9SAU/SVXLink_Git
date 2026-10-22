@@ -52,6 +52,31 @@ cat /etc/os-release
 
 Erwartet wird `armhf` sowie Bookworm (`VERSION_CODENAME=bookworm`).
 
+## Schnellinstallation (empfohlen)
+
+Für Raspberry Pi OS / Raspbian 12 Bookworm (ARMHF, 32 Bit) steht ein Installationsskript zur Verfügung.
+
+Das Skript lädt die benötigten PHP-8.2.35-Pakete aus dem GitHub Release herunter, prüft die SHA256-Prüfsummen und installiert die Pakete über APT.
+
+```bash
+wget https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/raspbian-php82/install.sh
+bash -n install.sh
+sudo bash install.sh
+```
+
+Die Installation muss bestätigt werden.
+
+Nach erfolgreicher Installation die PHP-Version überprüfen:
+
+```bash
+php -v
+```
+
+Erwartete Version: **PHP 8.2.35**
+
+**Hinweis:** Das Skript ist für Raspbian 12 Bookworm ARMHF vorgesehen. Es installiert PHP für Apache mit `mod_php`. Bestehende PHP-Konfigurationen sollten vorher gesichert werden.
+
+Alternativ ist die manuelle Installation der DEB-Pakete möglich.
 ## Installation aus GitHub Releases
 
 ### 1. Vorhandene Konfiguration sichern
