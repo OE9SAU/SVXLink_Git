@@ -1,3 +1,6 @@
+
+    
+  
 #!/usr/bin/env bash
 # PHP 8.2.35 for Raspbian 12 Bookworm ARMHF (Apache mod_php)
 set -Eeuo pipefail
@@ -55,6 +58,24 @@ apt-get -s install "${packages[@]/#/.\/}"
 printf '\nDie Pakete werden nun installiert. Fortfahren? [j/N] '
 read -r reply
 [[ $reply == j || $reply == J || $reply == ja || $reply == JA ]] || { echo "Abgebrochen."; exit 0; }
+
+info "Sichere vorhandene Apache- und PHP-Konfiguration"
+backup_dir="/var/backups/php82"
+backup_file="${backup_dir}/apache-php-$(date +%Y%m%d-%H%M%S)-$$.tar.gz"
+backup_paths=()
+[[ -d /etc/apache2 ]] && backup_paths+=(apache2)
+[[ -d /etc/php ]] && backup_paths+=(php)
+
+if (( ${#backup_paths[@]} > 0 )); then
+  install -d -m 0700 "$backup_dir"
+  # Das Archiv bleibt auch bei einem späteren Installationsfehler erhalten.
+  tar -C /etc -czf "$backup_file" "${backup_paths[@]}" || fail "Backup fehlgeschlagen. Installation abgebrochen."
+  chmod 0600 "$backup_file"
+  tar -tzf "$backup_file" >/dev/null || fail "Backup-Archiv ungültig. Installation abgebrochen."
+  info "Backup erstellt: $backup_file"
+else
+  info "Keine vorhandenen Verzeichnisse /etc/apache2 oder /etc/php gefunden; kein Konfigurationsbackup erforderlich."
+fi
 
 info "Installiere PHP 8.2.35"
 apt-get install "${packages[@]/#/.\/}"
