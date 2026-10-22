@@ -60,9 +60,9 @@ Das Skript lädt die benötigten PHP-8.2.35-Pakete aus dem GitHub Release herunt
 Vor der Installation sichert das Skript automatisch die vorhandene Apache- und PHP-Konfiguration unter /var/backups/php82/. Bei einem Fehler während der Sicherung wird die Installation abgebrochen.
 
 ```bash
+cd ~
 wget https://raw.githubusercontent.com/OE9SAU/SVXLink_Git/main/raspbian-php82/php82_install.sh
-bash -n php82_install.sh
-sudo bash php82_install.sh
+bash -n php82_install.sh && sudo bash php82_install.sh
 ```
 
 Die Installation muss bestätigt werden.
