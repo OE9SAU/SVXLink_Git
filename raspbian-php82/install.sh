@@ -22,12 +22,12 @@ command -v sha256sum >/dev/null || fail "sha256sum fehlt."
 command -v apt-get >/dev/null || fail "apt-get fehlt."
 
 packages=(
-  "php8.2-common_${VERSION}_armhf.deb"
-  "php8.2-cli_${VERSION}_armhf.deb"
-  "php8.2-opcache_${VERSION}_armhf.deb"
-  "php8.2-readline_${VERSION}_armhf.deb"
-  "libapache2-mod-php8.2_${VERSION}_armhf.deb"
-  "php8.2_${VERSION}_all.deb"
+  "php8.2-common_${ASSET_VERSION}_armhf.deb"
+  "php8.2-cli_${ASSET_VERSION}_armhf.deb"
+  "php8.2-opcache_${ASSET_VERSION}_armhf.deb"
+  "php8.2-readline_${ASSET_VERSION}_armhf.deb"
+  "libapache2-mod-php8.2_${ASSET_VERSION}_armhf.deb"
+  "php8.2_${ASSET_VERSION}_all.deb"
 )
 
 workdir=$(mktemp -d)
