@@ -49,9 +49,12 @@ sed -i 's/~deb12u1/.deb12u1/g' SHA256SUMS
 sha256sum --check --strict SHA256SUMS || fail "Prüfsummenprüfung fehlgeschlagen. Keine Installation."
 
 info "Prüfe Paket-Metadaten"
+
 for pkg in "${packages[@]}"; do
   actual_version=$(dpkg-deb -f "$pkg" Version)
-  [[ $actual_version == "$VERSION" ]] || fail "Unerwartete Version in $pkg: $actual_version"
+
+  [[ "$actual_version" == "$VERSION" ]] || \
+    fail "Unerwartete Version in $pkg: $actual_version (erwartet: $VERSION)"
 done
 
 info "APT-Installationssimulation"
