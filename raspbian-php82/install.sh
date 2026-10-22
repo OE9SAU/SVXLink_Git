@@ -1,47 +1,73 @@
 #!/usr/bin/env bash
+# PHP 8.2.35 for Raspbian 12 Bookworm ARMHF (Apache mod_php)
 set -Eeuo pipefail
-VERSION=8.2.35
-REPO="${REPO:-OWNER/raspbian-php82}"
-TAG="${TAG:-v${VERSION}-raspbian12-armhf-1}"
-BASE="https://github.com/${REPO}/releases/download/${TAG}"
-WORK="$(mktemp -d)"
-trap 'rm -rf "$WORK"' EXIT
-fail(){ echo "ERROR: $*" >&2; exit 1; }
-[[ $(id -u) -eq 0 ]] || fail 'Run with sudo.'
+
+REPO="OE9SAU/SVXLink_Git"
+TAG="php8.2.35-rpi11"
+VERSION="8.2.35-1~deb12u1+rpi11"
+BASE_URL="https://github.com/${REPO}/releases/download/${TAG}"
+
+fail() { printf 'FEHLER: %s\n' "$*" >&2; exit 1; }
+info() { printf '\n==> %s\n' "$*"; }
+
+[[ $(id -u) -eq 0 ]] || fail "Bitte mit sudo ausführen: sudo bash install.sh"
+[[ -r /etc/os-release ]] || fail "Betriebssystem nicht erkennbar."
+# shellcheck disable=SC1091
 source /etc/os-release
-[[ ${ID:-} == raspbian && ${VERSION_CODENAME:-} == bookworm ]] || fail 'Requires Raspbian 12 Bookworm.'
-[[ $(dpkg --print-architecture) == armhf ]] || fail 'Requires armhf.'
-[[ "$REPO" != OWNER/* ]] || fail 'Repository not configured. Set REPO=yourname/raspbian-php82 after publishing.'
-for cmd in curl sha256sum dpkg-deb apt-get tar; do command -v "$cmd" >/dev/null || fail "Missing $cmd"; done
-mkdir -p "$WORK/packages"
-echo "Downloading release manifest from $BASE"
-curl --fail --location --silent --show-error --retry 3 "$BASE/SHA256SUMS" -o "$WORK/SHA256SUMS"
-# Only explicitly formatted filenames; avoid path traversal and shell injection.
-mapfile -t files < <(awk '{print $2}' "$WORK/SHA256SUMS")
-((${#files[@]} > 0)) || fail 'Empty checksum manifest.'
-for name in "${files[@]}"; do
-  [[ "$name" =~ ^[a-zA-Z0-9][a-zA-Z0-9.+_~-]*\.deb$ ]] || fail "Invalid filename: $name"
-  curl --fail --location --silent --show-error --retry 3 "$BASE/$name" -o "$WORK/packages/$name"
+[[ ${VERSION_ID:-} == 12 ]] || fail "Nur Debian/Raspbian 12 (Bookworm) unterstützt."
+[[ ${VERSION_CODENAME:-} == bookworm ]] || fail "Nur Bookworm unterstützt."
+[[ $(dpkg --print-architecture) == armhf ]] || fail "Nur ARMHF (32 Bit) unterstützt."
+command -v curl >/dev/null || fail "curl fehlt. Bitte installieren: sudo apt install curl"
+command -v sha256sum >/dev/null || fail "sha256sum fehlt."
+command -v apt-get >/dev/null || fail "apt-get fehlt."
+
+packages=(
+  "php8.2-common_${VERSION}_armhf.deb"
+  "php8.2-cli_${VERSION}_armhf.deb"
+  "php8.2-opcache_${VERSION}_armhf.deb"
+  "php8.2-readline_${VERSION}_armhf.deb"
+  "libapache2-mod-php8.2_${VERSION}_armhf.deb"
+  "php8.2_${VERSION}_all.deb"
+)
+
+workdir=$(mktemp -d)
+trap 'rm -rf -- "$workdir"' EXIT
+cd "$workdir"
+
+info "Lade SHA256SUMS und sechs DEB-Pakete herunter"
+curl --fail --location --show-error --silent --retry 3 --output SHA256SUMS "${BASE_URL}/SHA256SUMS"
+for pkg in "${packages[@]}"; do
+  curl --fail --location --show-error --silent --retry 3 --output "$pkg" "${BASE_URL}/${pkg}"
 done
-(cd "$WORK/packages" && sha256sum -c "$WORK/SHA256SUMS") || fail 'Checksum mismatch.'
-for f in "$WORK"/packages/*.deb; do
-  [[ $(dpkg-deb -f "$f" Architecture) == armhf || $(dpkg-deb -f "$f" Architecture) == all ]] || fail "Architecture mismatch: $f"
-  pkg=$(dpkg-deb -f "$f" Package)
-  [[ "$pkg" == php8.2* || "$pkg" == libapache2-mod-php8.2 ]] || fail "Unexpected package: $pkg"
-  ver=$(dpkg-deb -f "$f" Version)
-  [[ "$ver" == "$VERSION"* ]] || fail "Unexpected version $ver"
+
+info "Prüfe SHA256-Prüfsummen"
+sha256sum --check --strict SHA256SUMS || fail "Prüfsummenprüfung fehlgeschlagen. Keine Installation."
+
+info "Prüfe Paket-Metadaten"
+for pkg in "${packages[@]}"; do
+  actual_version=$(dpkg-deb -f "$pkg" Version)
+  [[ $actual_version == "$VERSION" ]] || fail "Unerwartete Version in $pkg"
 done
-BACKUP="/root/php82-backup-$(date +%Y%m%d-%H%M%S).tar.gz"
-paths=(); [[ -d /etc/php/8.2 ]] && paths+=(etc/php/8.2); [[ -d /etc/apache2 ]] && paths+=(etc/apache2)
-((${#paths[@]} == 0)) || tar -C / -czf "$BACKUP" "${paths[@]}"
-echo "Configuration backup: $BACKUP"
-echo 'APT dry-run (review changes):'
-apt-get -s install "$WORK"/packages/*.deb
-read -r -p 'Proceed with installation? [y/N] ' reply
-[[ "$reply" =~ ^[Yy]$ ]] || exit 0
-apt-get install "$WORK"/packages/*.deb
-if command -v apache2ctl >/dev/null && systemctl is-active --quiet apache2; then
+
+info "APT-Installationssimulation"
+apt-get -s install "${packages[@]/#/.\/}"
+
+printf '\nDie Pakete werden nun installiert. Fortfahren? [j/N] '
+read -r reply
+[[ $reply == j || $reply == J || $reply == ja || $reply == JA ]] || { echo "Abgebrochen."; exit 0; }
+
+info "Installiere PHP 8.2.35"
+apt-get install "${packages[@]/#/.\/}"
+
+info "Prüfe PHP CLI"
+php -v | head -n 1
+if command -v apache2ctl >/dev/null; then
+  info "Prüfe Apache-Konfiguration"
   apache2ctl configtest
-  systemctl restart apache2
+  if command -v systemctl >/dev/null && systemctl is-active --quiet apache2; then
+    systemctl restart apache2
+    info "Apache neu gestartet"
+  fi
 fi
-php -v
+info "Fertig. Bitte Apache-PHP-Version und Webanwendungen ebenfalls testen."
+
