@@ -1,3 +1,7 @@
+# GeuReflector AudioCheck – TG 9998 🎙️
+AudioCheck-Erweiterung für den SVXLink GeuReflector zur Überprüfung und Einstellung des Mikrofonpegels über die Talkgroup 9998.
+Die Erweiterung ermöglicht eine Echtzeit-Pegelmessung mit RMS- und Peak-Anzeige in dBFS sowie eine Clipping-Erkennung.
+
 # PHP 8.2.35 für Raspbian 12 Bookworm (ARMHF)
 Selbst kompilierte PHP-8.2.35-DEB-Pakete für **Raspberry Pi OS / Raspbian 12 Bookworm (32 Bit, ARMHF)**. Die Pakete basieren auf dem offiziellen Debian-Sicherheitsquellpaket `php8.2` in Version `8.2.35-1~deb12u1` und wurden nativ auf einem **Raspberry Pi 3 Model B+** gebaut.
 
