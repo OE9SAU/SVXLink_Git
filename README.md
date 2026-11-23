@@ -1,4 +1,4 @@
-# SVXLink Reflektor AudioCheck – TG 9998 🎙️
+# SVXLink GeuReflektor AudioCheck erweiterung 🎙️
 AudioCheck-Erweiterung für den SVXLink GeuReflector zur Überprüfung und Einstellung des Mikrofonpegels über die Talkgroup 9998.
 Die Erweiterung ermöglicht eine Echtzeit-Pegelmessung mit RMS- und Peak-Anzeige in dBFS sowie eine Clipping-Erkennung.
 
