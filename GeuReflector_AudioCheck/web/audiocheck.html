@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SVXLink AudioCheck TG 9998</title>
+<style>
+body {
+  background: #161b22;
+  color: #e6edf3;
+  font-family: Arial, sans-serif;
+  margin: 30px;
+}
+.panel {
+  max-width: 700px;
+  margin: auto;
+  background: #21262d;
+  padding: 25px;
+  border-radius: 12px;
+}
+h2 { margin-top: 0; }
+.status { margin: 20px 0; }
+.meter {
+  position: relative;
+  height: 32px;
+  background: #30363d;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.level {
+  height: 100%;
+  width: 0;
+  background: #3fb950;
+  transition: width 0.2s;
+}
+
+.target {
+  position: absolute;
+  left: 80%;
+  top: 0;
+  bottom: 0;
+  border-left: 3px solid white;
+}
+.values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+.agc-panel {
+  margin-top: 25px;
+  padding: 18px;
+  background: #161b22;
+  border: 1px solid #444c56;
+  border-radius: 8px;
+}
+.agc-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.agc-controls button {
+  padding: 9px 18px;
+  border: 1px solid #8b949e;
+  border-radius: 6px;
+  background: #30363d;
+  color: #e6edf3;
+  cursor: pointer;
+}
+.agc-controls button.selected {
+  background: #238636;
+  border-color: #3fb950;
+}
+.agc-controls button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.agc-target {
+  width: 100%;
+  margin-top: 12px;
+  accent-color: #3fb950;
+}
+.agc-message {
+  color: #8b949e;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.warning { color: #f85149; }
+.ok { color: #3fb950; }
+
+.panel {
+  max-width: 1250px;
+}
+
+.audio-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.audio-live,
+.audio-history {
+  min-width: 0;
+}
+
+.audio-history {
+  margin-top: 195px;
+  background: #161b22;
+  border: 1px solid #444c56;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.audio-history h3 {
+  margin-top: 0;
+}
+
+.audio-history .values {
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.audio-history .values > div {
+  flex: 1 1 160px;
+}
+
+@media (max-width: 850px) {
+  body {
+    margin: 12px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .audio-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="panel">
+<div class="audio-layout">
+<section class="audio-live">
+  <h2>SVXLink AudioCheck – TG 9998</h2>
+
+  <div class="status">
+    Rufzeichen: <strong id="callsign">---</strong>
+  </div>
+
+  <div class="status">
+    RX-Status: <strong id="rx">Warten</strong>
+  </div>
+
+  <div class="meter">
+    <div class="level" id="level"></div>
+    <div class="target"></div>
+  </div>
+
+  <div class="values">
+    <span>Live-RMS: <strong id="rms">---</strong> dBFS</span>
+    <span>Live-Peak: <strong id="peak">---</strong> dBFS</span>
+  </div>
+
+
+<div class="agc-panel">
+  <h3>Audio-AGC – TG 9998</h3>
+
+  <div class="agc-controls">
+    <button type="button" id="agcOff">AGC AUS</button>
+    <button type="button" id="agcOn">AGC EIN</button>
+
+  </div>
+
+  <p>
+    RMS-Zielpegel:
+    <strong id="agcTargetValue">−12 dBFS</strong>
+  </p>
+
+  <input type="range"
+         class="agc-target"
+         id="agcTarget"
+         min="-36"
+         max="-6"
+         step="1"
+         value="-12"
+         aria-label="AGC-Zielpegel">
+
+  <div class="values">
+    <span>−36 dBFS</span>
+    <span>−6 dBFS</span>
+  </div>
+
+  <h4>Ausgang nach AGC</h4>
+  <div class="meter">
+    <div class="level" id="agcOutputLevel"></div>
+  </div>
+
+  <div class="values">
+    <span>RMS: <strong id="agcOutputRms">---</strong> dBFS</span>
+    <span>Peak: <strong id="agcOutputPeak">---</strong> dBFS</span>
+  </div>
+
+  <p>Verstärkung: <strong id="agcGain">---</strong> dB</p>
+
+  <div class="agc-message" id="agcMessage">
+    Warte auf Reflektor-Verbindung.
+  </div>
+</div>
+
+</section>
+<section class="audio-history">
+
+
+<h3>Letzte Aussendung – Messwerte
+
+</h3>
+
+<p>Station: <strong id="lastStation">---</strong></p>
+<p>AGC: <strong id="lastAgcState">---</strong>
+   | Zielpegel: <strong id="lastTarget">---</strong> dBFS</p>
+<div id="lastGainDetails" style="display:none">
+  <p>Min. Gain: <strong id="minGain">---</strong> dB</p>
+  <p>Max. Gain: <strong id="maxGain">---</strong> dB</p>
+  <p>Letzter Gain: <strong id="lastGain">---</strong> dB</p>
+</div>
+
+<div class="values">
+  <div>
+    <h4>Eingang – vor AGC</h4>
+    <p>Max. RMS: <strong id="maxRms">---</strong> dBFS</p>
+    <p>Max. Peak: <strong id="maxPeak">---</strong> dBFS</p>
+    <p>Clipping: <strong id="clipping">---</strong></p>
+  </div>
+  <div>
+    <h4>Ausgang – nach AGC</h4>
+    <p>Max. RMS: <strong id="lastOutputRms">---</strong> dBFS</p>
+    <p>Max. Peak: <strong id="lastOutputPeak">---</strong> dBFS</p>
+    <p>Clipping: <strong id="lastOutputClipping">---</strong></p>
+  </div>
+</div>
+
+
+<p style="color:#8b949e;font-size:13px">
+  Messwerte der letzten Aussendung. Sie bleiben bis zur nächsten
+  Aussendung erhalten.
+</p>
+</section>
+<p id="mode">TESTMODUS – simulierte Messwerte</p>
+</div>
+</div>
+
+<script>
+let lastActive = false;
+let maxRms = -120;
+let maxPeak = -120;
+let hadClipping = false;
+let lastCallsign = "";
+let callsignClearTimer = null;
+
+function updateLiveCallsign(active, callsign) {
+  const display = document.getElementById("callsign");
+
+  if (active) {
+    if (callsignClearTimer !== null) {
+      clearTimeout(callsignClearTimer);
+      callsignClearTimer = null;
+    }
+
+    if (callsign) {
+      lastCallsign = callsign;
+    }
+
+    display.textContent = lastCallsign || "---";
+  } else if (lastActive) {
+    if (callsignClearTimer !== null) {
+      clearTimeout(callsignClearTimer);
+    }
+
+    display.textContent = lastCallsign || "---";
+
+    callsignClearTimer = setTimeout(() => {
+      display.textContent = "---";
+      callsignClearTimer = null;
+    }, 5000);
+  }
+}
+
+let lastOutputRms = -120;
+let lastOutputPeak = -120;
+let lastOutputClipping = false;
+let lastAgcEnabled = false;
+let lastTargetDbfs = -12;
+let lastGainDb = 0;
+let minGainDb = Infinity;
+let maxGainDb = -Infinity;
+let lastMeasurementValid = false;
+
+function updateLastValues(data, newTransmission) {
+  if (newTransmission) {
+    lastOutputRms = -120;
+    lastOutputPeak = -120;
+    lastOutputClipping = false;
+    lastMeasurementValid = false;
+    minGainDb = Infinity;
+    maxGainDb = -Infinity;
+  }
+
+  if (data.active) {
+    lastMeasurementValid = true;
+    lastAgcEnabled = Boolean(data.agc_enabled);
+    lastTargetDbfs = Number(data.target_dbfs);
+    lastGainDb = Number(data.gain_db);
+
+    if (Number.isFinite(lastGainDb)) {
+      minGainDb = Math.min(minGainDb, lastGainDb);
+      maxGainDb = Math.max(maxGainDb, lastGainDb);
+    }
+
+    lastOutputRms = Math.max(
+      lastOutputRms, Number(data.output_rms_dbfs)
+    );
+    lastOutputPeak = Math.max(
+      lastOutputPeak, Number(data.output_peak_dbfs)
+    );
+
+    lastOutputClipping = lastOutputClipping ||
+      Number(data.output_peak_dbfs) >= -0.1;
+  }
+
+  const show = lastMeasurementValid;
+
+  document.getElementById("lastGainDetails").style.display =
+    show && lastAgcEnabled ? "" : "none";
+
+  document.getElementById("lastStation").textContent =
+    show ? lastCallsign : "---";
+
+  document.getElementById("lastAgcState").textContent =
+    show ? (lastAgcEnabled ? "EIN" : "AUS") : "---";
+
+  document.getElementById("lastTarget").textContent =
+    show ? formatDb(lastTargetDbfs) : "---";
+
+  document.getElementById("lastOutputRms").textContent =
+    show && lastOutputRms > -120 ? formatDb(lastOutputRms) : "---";
+
+  document.getElementById("lastOutputPeak").textContent =
+    show && lastOutputPeak > -120 ? formatDb(lastOutputPeak) : "---";
+
+  document.getElementById("lastOutputClipping").textContent =
+    show ? (lastOutputClipping ? "JA" : "Nein") : "---";
+
+  document.getElementById("lastGain").textContent =
+    show ? formatDb(lastGainDb) : "---";
+
+  document.getElementById("minGain").textContent =
+    show && Number.isFinite(minGainDb)
+      ? formatDb(minGainDb) : "---";
+
+  document.getElementById("maxGain").textContent =
+    show && Number.isFinite(maxGainDb)
+      ? formatDb(maxGainDb) : "---";
+}
+
+
+function formatDb(value) {
+  return Number(value).toFixed(1);
+}
+
+
+
+function updateAudio(data) {
+  const active = data.active;
+
+  if (active && !lastActive) {
+    maxRms = -120;
+    maxPeak = -120;
+    hadClipping = false;
+  }
+
+  if (active) {
+    lastCallsign = data.callsign || lastCallsign;
+
+    maxRms = Math.max(maxRms, data.rms_dbfs);
+    maxPeak = Math.max(maxPeak, data.peak_dbfs);
+    hadClipping = hadClipping || data.clipping;
+
+    document.getElementById("rms").textContent =
+      formatDb(data.rms_dbfs);
+
+    document.getElementById("peak").textContent =
+      formatDb(data.peak_dbfs);
+
+    const level = Math.max(
+      0, Math.min(100, (data.rms_dbfs + 60) / 60 * 100)
+    );
+
+    const bar = document.getElementById("level");
+    bar.style.width = level + "%";
+    bar.style.background =
+      "linear-gradient(to right, #3fb950 0%, " +
+      "#3fb950 " + Math.min(100, 80 / Math.max(level, 0.001) * 100) + "%, " +
+      "#f85149 " + Math.min(100, 80 / Math.max(level, 0.001) * 100) + "%, " +
+      "#f85149 100%)";
+
+  } else {
+    document.getElementById("rms").textContent = "---";
+    document.getElementById("peak").textContent = "---";
+    document.getElementById("level").style.width = "0%";
+  }
+
+  document.getElementById("maxRms").textContent =
+    maxRms > -120 ? formatDb(maxRms) : "---";
+
+  document.getElementById("maxPeak").textContent =
+    maxPeak > -120 ? formatDb(maxPeak) : "---";
+
+  updateLiveCallsign(active, data.callsign);
+
+  document.getElementById("rx").textContent =
+    active ? "Empfang aktiv" : "Warten";
+
+  document.getElementById("clipping").textContent =
+    hadClipping ? "JA" : "Nein";
+
+  updateLastValues(data, active && !lastActive);
+  lastActive = active;
+}
+
+
+// AudioCheck AGC-Steuerung
+let agcRequestPending = false;
+let agcTargetEditing = false;
+
+function updateAgcDisplay(data) {
+  if (!agcRequestPending) {
+    const enabled = Boolean(data.agc_enabled);
+
+    document.getElementById("agcOff").classList.toggle("selected", !enabled);
+    document.getElementById("agcOn").classList.toggle("selected", enabled);
+
+  }
+
+  if (!agcTargetEditing && !agcRequestPending) {
+    const target = Number(data.target_dbfs);
+    if (Number.isFinite(target)) {
+      document.getElementById("agcTarget").value = target;
+      document.getElementById("agcTargetValue").textContent =
+        target.toFixed(0) + " dBFS";
+    }
+  }
+
+  const active = Boolean(data.active);
+
+  document.getElementById("agcOutputRms").textContent =
+    active ? formatDb(data.output_rms_dbfs) : "---";
+
+  document.getElementById("agcOutputPeak").textContent =
+    active ? formatDb(data.output_peak_dbfs) : "---";
+
+  document.getElementById("agcGain").textContent =
+    active ? formatDb(data.gain_db) : "---";
+
+  const level = active
+    ? Math.max(0, Math.min(100,
+        (Number(data.output_rms_dbfs) + 60) / 60 * 100))
+    : 0;
+
+  const bar = document.getElementById("agcOutputLevel");
+  bar.style.width = level + "%";
+  bar.style.background = "#3fb950";
+}
+
+async function sendAgcCommand(path) {
+  if (agcRequestPending) return false;
+
+  agcRequestPending = true;
+  document.getElementById("agcOff").disabled = true;
+  document.getElementById("agcOn").disabled = true;
+  document.getElementById("agcTarget").disabled = true;
+
+  try {
+    const response = await fetch(path, {
+      method: "POST",
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
+    const data = await response.json();
+
+    document.getElementById("agcMessage").textContent =
+      "Einstellung übernommen.";
+
+    return true;
+  } catch (error) {
+    document.getElementById("agcMessage").textContent =
+      "AGC-Steuerung fehlgeschlagen: " + error.message;
+    return false;
+  } finally {
+    agcRequestPending = false;
+    document.getElementById("agcOff").disabled = false;
+    document.getElementById("agcOn").disabled = false;
+    document.getElementById("agcTarget").disabled = false;
+  }
+}
+
+document.getElementById("agcOff").addEventListener("click", () => {
+  sendAgcCommand("/audiocheck/agc/off");
+});
+
+document.getElementById("agcOn").addEventListener("click", () => {
+  sendAgcCommand("/audiocheck/agc/on");
+});
+
+const agcTargetSlider = document.getElementById("agcTarget");
+
+agcTargetSlider.addEventListener("input", () => {
+  agcTargetEditing = true;
+  document.getElementById("agcTargetValue").textContent =
+    agcTargetSlider.value + " dBFS";
+});
+
+agcTargetSlider.addEventListener("change", async () => {
+  const value = agcTargetSlider.value;
+  await sendAgcCommand(
+    "/audiocheck/agc/target?dbfs=" + encodeURIComponent(value)
+  );
+  agcTargetEditing = false;
+});
+
+async function loadAudioCheck() {
+  try {
+    const response = await fetch(
+      "/audiocheck.json",
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
+    const data = await response.json();
+    updateAudio(data);
+    updateAgcDisplay(data);
+
+    document.getElementById("mode").textContent =
+      "LIVE – SVXReflector TG " + data.tg;
+
+  } catch (error) {
+    document.getElementById("rx").textContent =
+      "Verbindung unterbrochen";
+
+    document.getElementById("mode").textContent =
+      "Fehler: " + error.message;
+  }
+}
+
+loadAudioCheck();
+setInterval(loadAudioCheck, 100);
+</script>
+</body>
+</html>

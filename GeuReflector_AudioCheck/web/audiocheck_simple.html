@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SVXLink AudioCheck TG 9998</title>
+<style>
+body {
+  background: #161b22;
+  color: #e6edf3;
+  font-family: Arial, sans-serif;
+  margin: 30px;
+}
+.panel {
+  max-width: 700px;
+  margin: auto;
+  background: #21262d;
+  padding: 25px;
+  border-radius: 12px;
+}
+h2 { margin-top: 0; }
+.status { margin: 20px 0; }
+.meter {
+  position: relative;
+  height: 32px;
+  background: #30363d;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.level {
+  height: 100%;
+  width: 0;
+  background: #3fb950;
+  transition: width 0.2s;
+}
+
+.target {
+  z-index: 5;
+  border-left: 3px solid white;
+  position: absolute;
+  left: 80%;
+  top: 0;
+  bottom: 0;
+  border-left: 3px solid #3fb950;
+}
+.values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+.agc-panel {
+  margin-top: 25px;
+  padding: 18px;
+  background: #161b22;
+  border: 1px solid #444c56;
+  border-radius: 8px;
+}
+.agc-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.agc-controls button {
+  padding: 9px 18px;
+  border: 1px solid #8b949e;
+  border-radius: 6px;
+  background: #30363d;
+  color: #e6edf3;
+  cursor: pointer;
+}
+.agc-controls button.selected {
+  background: #238636;
+  border-color: #3fb950;
+}
+.agc-controls button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.agc-target {
+  width: 100%;
+  margin-top: 12px;
+  accent-color: #3fb950;
+}
+.agc-message {
+  color: #8b949e;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.warning { color: #f85149; }
+.ok { color: #3fb950; }
+
+.panel {
+  max-width: 700px;
+}
+
+.audio-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.audio-live,
+.audio-history {
+  min-width: 0;
+}
+
+.audio-history {
+  margin-top: 195px;
+  background: #161b22;
+  border: 1px solid #444c56;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.audio-history h3 {
+  margin-top: 0;
+}
+
+.audio-history .values {
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.audio-history .values > div {
+  flex: 1 1 160px;
+}
+
+@media (max-width: 850px) {
+  body {
+    margin: 12px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .audio-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.limit12 {
+  position: absolute;
+  left: 80%;
+  top: 0;
+  bottom: 0;
+  border-left: 3px solid #f85149;
+}
+
+.agc-limits {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 20px;
+  font-weight: bold;
+}
+
+.agc-target-label,
+.agc-target-label strong {
+  color: #3fb950 !important;
+}
+
+.agc-max-label,
+.agc-max-label strong {
+  color: #f85149 !important;
+}
+
+
+/* RMS-Beschriftung folgt dem grünen Marker */
+.agc-target-label {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  color: #3fb950 !important;
+  transform: translateX(-50%);
+}
+
+
+.agc-limits {
+  position: relative;
+  min-height: 28px;
+}
+.agc-target-label {
+  position: absolute;
+  top: 0;
+  margin: 0;
+}
+.agc-max-label {
+  margin-left: auto;
+}
+
+
+/* Höchstwert oberhalb des Pegelbalkens */
+.max-above {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.max-above .agc-max-label {
+  color: #f85149 !important;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+/* How-to-Block rechts neben AudioCheck */
+.panel {
+  max-width: 1100px;
+}
+
+.audio-layout {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+}
+
+.audio-howto {
+  background: #161b22;
+  border: 1px solid #444c56;
+  border-radius: 8px;
+  padding: 18px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.audio-howto h3 {
+  margin: 0 0 12px;
+  color: #e6edf3;
+}
+
+.audio-howto ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.audio-howto li {
+  margin-bottom: 10px;
+}
+
+.audio-howto .hint {
+  color: #3fb950;
+  margin-bottom: 0;
+}
+
+@media (max-width: 850px) {
+  .audio-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Kompaktes AudioCheck-Layout */
+@media (min-width: 1100px) {
+  .panel {
+    max-width: 700px;
+    position: relative;
+  }
+
+  .audio-layout {
+    display: block;
+  }
+
+  .audio-howto {
+    position: absolute;
+    top: 25px;
+    left: calc(100% + 20px);
+    width: 280px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 1099px) {
+  .panel {
+    max-width: 700px;
+  }
+
+  .audio-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .audio-howto {
+    width: auto;
+  }
+}
+
+
+/* How-to-Block: kompakt und oben bündig */
+.audio-howto {
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 14px;
+}
+
+.audio-howto h3 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.audio-howto li {
+  margin-bottom: 7px;
+}
+
+@media (min-width: 1100px) {
+  .audio-howto {
+    top: 0;
+  }
+}
+
+
+/* AudioCheck und How-to gemeinsam zentrieren */
+@media (min-width: 1100px) {
+  .panel {
+    transform: translateX(-150px);
+  }
+}
+
+
+/* How-to gleiche Hoehe wie AudioCheck */
+@media (min-width: 1100px) {
+  .audio-howto {
+    height: var(--audiocheck-height, auto);
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="panel">
+<div class="audio-layout">
+<section class="audio-live">
+  <h2>SVX-Client AudioCheck – TG 9998</h2>
+
+
+
+  <div class="status">
+    Rufzeichen: <strong id="callsign">---</strong>
+  </div>
+
+  <div class="status">
+    RX-Status: <strong id="rx">Warten</strong>
+  </div>
+
+  <div class="max-above"><span class="agc-max-label">
+    Höchstwert: <strong>−12</strong> dBFS
+  </span></div>
+<div class="meter">
+    <div class="level" id="level"></div>
+    <div class="target"></div>
+    <div class="limit12"></div>
+  </div>
+
+<div class="agc-limits">
+  <span id="agcStatus" style="font-weight:bold">
+    AGC: ---
+  </span>
+  <span class="agc-target-label">
+    RMS-Zielwert: <strong id="targetValue">---</strong> dBFS
+  </span>
+
+</div>
+
+
+
+
+<div class="values" id="agcValues">
+  <span>Eingang Max: <strong id="rms">---</strong> dBFS</span>
+  <span>Ausgang Max: <strong id="output">---</strong> dBFS</span>
+  <span>AGC-Korrektur (letzter Wert): <strong id="gain">---</strong> dB</span>
+</div>
+
+
+
+</section>
+
+<aside class="audio-howto">
+  <h3>How to – AudioCheck</h3>
+  <ol>
+    <li>PTT drücken und einige Sekunden mit normaler Lautstärke sprechen.</li>
+    <li>Den RMS-Pegel beobachten und versuchen, möglichst nahe an
+        <strong style="color:#3fb950">−20 dBFS</strong> zu kommen.</li>
+    <li>Ist der Pegel zu niedrig oder zu hoch, den AudioPegel am SVXLink-Client bzw. die Mikrofoneinstellung am Funkgerät entsprechend anpassen.</li>
+    <li>Test wiederholen, bis der Pegel möglichst nahe bei
+        <strong style="color:#3fb950">−20 dBFS</strong> liegt.</li>
+  </ol>
+</aside>
+
+<p id="mode">TESTMODUS – simulierte Messwerte</p>
+</div>
+</div>
+
+<script>
+
+function formatDb(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toFixed(1) : "---";
+}
+
+
+let lastActive = false;
+let maxInputRms = -120;
+let maxOutputRms = -120;
+let lastGain = 0;
+let measurementValid = false;
+let lastCallsign = "";
+let callsignClearTimer = null;
+
+function updateLiveCallsign(active, callsign) {
+  const display = document.getElementById("callsign");
+
+  if (active) {
+    if (callsignClearTimer !== null) {
+      clearTimeout(callsignClearTimer);
+      callsignClearTimer = null;
+    }
+
+    if (callsign) {
+      lastCallsign = callsign;
+    }
+
+    display.textContent = lastCallsign || "---";
+  } else if (lastActive) {
+    if (callsignClearTimer !== null) {
+      clearTimeout(callsignClearTimer);
+    }
+
+    display.textContent = lastCallsign || "---";
+
+    callsignClearTimer = setTimeout(() => {
+      display.textContent = "---";
+      callsignClearTimer = null;
+    }, 5000);
+  }
+}
+
+function updateAudio(data) {
+
+  // RMS-Text und grünen Marker gemeinsam verschieben
+  const rmsReference = data.agc_enabled
+    ? Number(data.target_dbfs)
+    : -20;
+
+  if (Number.isFinite(rmsReference)) {
+    const position = Math.max(
+      0, Math.min(100, (rmsReference + 60) / 60 * 100)
+    );
+
+    const marker = document.querySelector(".meter .target");
+    const label = document.querySelector(".agc-target-label");
+
+    if (marker) marker.style.left = position + "%";
+    if (label) {
+      label.style.left = position + "%";
+      label.style.display = "";
+    }
+  }
+
+  const active = Boolean(data.active);
+
+  // Neue Aussendung: Maximalwerte zurücksetzen
+  if (active && !lastActive) {
+    maxInputRms = -120;
+    maxOutputRms = -120;
+    lastGain = 0;
+    measurementValid = false;
+  }
+
+  if (active) {
+    measurementValid = true;
+    lastCallsign = data.callsign || lastCallsign;
+
+    maxInputRms = Math.max(
+      maxInputRms, Number(data.rms_dbfs)
+    );
+
+    maxOutputRms = Math.max(
+      maxOutputRms, Number(data.output_rms_dbfs)
+    );
+
+    lastGain = Number(data.gain_db);
+  }
+
+  updateLiveCallsign(active, data.callsign);
+
+  document.getElementById("rx").textContent =
+    active ? "Empfang aktiv" : "Warten";
+
+  // Dieselben Maximalwerte wie in der Originalseite
+  document.getElementById("rms").textContent =
+    measurementValid && maxInputRms > -120
+      ? formatDb(maxInputRms) : "---";
+
+  document.getElementById("output").textContent =
+    measurementValid && maxOutputRms > -120
+      ? formatDb(maxOutputRms) : "---";
+
+  document.getElementById("gain").textContent =
+    measurementValid ? formatDb(lastGain) : "---";
+
+  // Vorhandener Pegelbalken: aktueller Eingangspegel
+  const level = active
+    ? Math.max(0, Math.min(100,
+        (Number(data.rms_dbfs) + 60) / 60 * 100))
+    : 0;
+
+  const bar = document.getElementById("level");
+  bar.style.width = level + "%";
+
+  const greenEnd = Math.min(
+    100, 80 / Math.max(level, 0.001) * 100
+  );
+
+  bar.style.background =
+    "linear-gradient(to right, #3fb950 0%, " +
+    "#3fb950 " + greenEnd + "%, " +
+    "#f85149 " + greenEnd + "%, " +
+    "#f85149 100%)";
+
+  lastActive = active;
+}
+
+async function loadAudioCheck() {
+  try {
+    const response = await fetch(
+      "/audiocheck.json",
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
+    const data = await response.json();
+    const target = Number(data.target_dbfs);
+
+    const targetMarker = document.querySelector(".meter .target");
+
+    // AGC AUS: feste Referenz -20 dBFS
+    // AGC EIN: eingestellter RMS-Zielwert
+    const markerDbfs = data.agc_enabled
+      ? Number(data.target_dbfs)
+      : -20;
+
+    if (targetMarker && Number.isFinite(markerDbfs)) {
+      targetMarker.style.left =
+        Math.max(0, Math.min(100,
+          (markerDbfs + 60) / 60 * 100)) + "%";
+      targetMarker.style.display = "";
+    }
+
+    document.getElementById("targetValue").textContent =
+      Number.isFinite(target) ? target.toFixed(0) : "---";
+
+
+    // AGC-Status und Zielwertanzeige
+    const agcEnabled = Boolean(data.agc_enabled);
+    // Messwerte nur bei eingeschalteter AGC anzeigen
+    const agcValues = document.getElementById("agcValues");
+    if (agcValues) {
+      agcValues.style.display = agcEnabled ? "" : "none";
+    }
+
+
+    // Beschriftung des grünen Cursors
+    const targetLabel = document.querySelector(".agc-target-label");
+
+    if (targetLabel) {
+      const markerValue = agcEnabled
+        ? Number(data.target_dbfs)
+        : -20;
+
+      targetLabel.innerHTML =
+        "RMS-Zielwert: " +
+        '<strong id="targetValue">' +
+        markerValue.toFixed(0) +
+        '</strong> dBFS';
+
+      targetLabel.style.display = "";
+      targetLabel.style.color = "#3fb950";
+    }
+
+
+    const status = document.getElementById("agcStatus");
+    status.textContent = agcEnabled ? "AGC EIN" : "AGC AUS";
+    status.style.color = agcEnabled ? "#3fb950" : "#f85149";
+
+    // Zielwert-Text nur bei eingeschalteter AGC
+    document.querySelector(".agc-target-label").style.display = "";
+
+    // Grünen Zielwert-Strich nur bei eingeschalteter AGC
+    const marker = document.querySelector(".meter .target");
+    if (marker) {
+      marker.style.display = "";
+    }
+
+    updateAudio(data);
+
+    document.getElementById("mode").textContent =
+      "LIVE – SVXReflector TG " + data.tg;
+
+  } catch (error) {
+    document.getElementById("rx").textContent =
+      "Verbindung unterbrochen";
+
+    document.getElementById("mode").textContent =
+      "Fehler: " + error.message;
+  }
+}
+
+loadAudioCheck();
+setInterval(loadAudioCheck, 100);
+</script>
+
+<script>
+/* Hoehe des How-to-Fensters automatisch angleichen */
+(function () {
+  const live = document.querySelector('.panel');
+  const howto = document.querySelector('.audio-howto');
+  if (!live || !howto) return;
+
+  const updateHeight = () => {
+    howto.style.setProperty(
+      '--audiocheck-height',
+      live.getBoundingClientRect().height + 'px'
+    );
+  };
+
+  updateHeight();
+  new ResizeObserver(updateHeight).observe(live);
+})();
+</script>
+
+</body>
+</html>
