@@ -4,14 +4,7 @@ AudioCheck-Erweiterung für das SVXLink-Modul Parrot zur
 automatischen Überprüfung und Einstellung des Mikrofonpegels
 auf Hotspots und Repeatern.
 
-- RMS- und Peak-Messung in dBFS
-- Akustische Audiopegelbewertung in fünf Stufen
-- Deutsche Sprachansagen
-- Konfigurierbare Bewertungsgrenzen
-- Automatisierter Installer mit Kompatibilitätsprüfung
-- Automatische Sicherung und Rollback
-- Vorkompiliertes ARMHF-Modul für Raspbian 12 Bookworm
-- C++-Quellcode und Patch
+- RMS- und Peak-Messung mit Audiopegelbewertung in Deutscher Sprache
 
 [Zur Dokumentation und Installation](Parrot_AudioCheck/README.md)
 
