@@ -4,7 +4,7 @@ AudioCheck-Erweiterung für das SVXLink-Modul Parrot zur
 automatischen Überprüfung und Einstellung des Mikrofonpegels
 auf Hotspots und Repeatern.
 
-- RMS- und Peak-Messung mit Audiopegelbewertung in Deutscher Sprache
+- Audiopegelmessung mit Audiopegelbewertung in Deutscher Sprache
 
 [Zur Dokumentation und Installation](Parrot_AudioCheck/README.md)
 
