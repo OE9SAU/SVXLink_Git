@@ -41,24 +41,56 @@ Andere SVXLink-Versionen und Architekturen werden
 vom Installer nicht unterstützt.
 
 ```bash
-echo "=== SVXLink-Version ==="
-svxlink --version
+clear
+
+(
+OK=1
+
+check() {
+    if [ "$2" = "$3" ]; then
+        printf "%-25s OK\n" "$1"
+    else
+        printf "%-25s FEHLER (%s)\n" "$1" "$2"
+        OK=0
+    fi
+}
+
+echo "=== AudioCheck V1.02 Kompatibilitaet ==="
+echo ""
+
+check "SVXLink-Version" \
+    "$(svxlink --version 2>/dev/null)" \
+    "1.8.99.11@24.02-48-g9d6e0c79"
+
+check "Architektur" \
+    "$(dpkg --print-architecture)" "armhf"
+
+. /etc/os-release
+check "Betriebssystem" "$ID:$VERSION_CODENAME" "raspbian:bookworm"
+
+HASH=$(sha256sum /usr/lib/arm-linux-gnueabihf/svxlink/ModuleParrot.so 2>/dev/null | cut -d' ' -f1)
+
+case "$HASH" in
+    7fece04577f8769f9527019b0f7aee1590e52181a93d14ab7f0afaaabf5a7faa)
+        echo "Parrot-Modul:             OK (Original)" ;;
+    bc345ba8a378a78262f0acf24e9e9fb5cda420413b2f0a46326a9d38f93c6ab3)
+        echo "Parrot-Modul:             OK (V1.0)" ;;
+    d43ed9b8629cc943c1fe15d24b60d7df9079f11484e553101f9ad8f9e6896a5d)
+        echo "Parrot-Modul:             OK (V1.01)" ;;
+    2c1f6bcffeed9a5080e13718f39be7d5dd744b990aff949a019c24a2f6636bc1)
+        echo "Parrot-Modul:             OK (V1.02)" ;;
+    *)
+        echo "Parrot-Modul:             FEHLER"
+        OK=0 ;;
+esac
 
 echo ""
-echo "=== Architektur ==="
-dpkg --print-architecture
-
-echo ""
-echo "=== Betriebssystem ==="
-cat /etc/os-release
-
-echo ""
-echo "=== Parrot-Modul SHA256 ==="
-sha256sum /usr/lib/arm-linux-gnueabihf/svxlink/ModuleParrot.so
-
-echo ""
-echo "=== SVXLink-Dienstzustand ==="
-systemctl is-active svxlink
+if [ "$OK" -eq 1 ]; then
+    echo "ERGEBNIS: KOMPATIBEL"
+else
+    echo "ERGEBNIS: NICHT KOMPATIBEL"
+fi
+)
 ```
 
 ## Installation
