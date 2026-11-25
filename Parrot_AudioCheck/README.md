@@ -23,7 +23,6 @@ Messung nicht erforderlich.
 - Fünf akustische Bewertungsstufen
 - Sprachansage bei ungültiger Messung
 - Messwerte im SVXLink-Logfile
-- Keine automatische Pegelregelung (AGC)
 - Unveränderte Wiedergabe der aufgenommenen Sprache
 - Automatisches Backup vor der Installation
 - Rollback-Funktion
