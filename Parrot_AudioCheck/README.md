@@ -137,15 +137,15 @@ Bei der Standard-Modul-ID 1:
 ## Audiopegelbewertung
 
 Bei einem RMS-Zielpegel von -20 dBFS und einer
-Toleranz von +/-3 dB gelten folgende Bewertungsstufen:
+Toleranz von +/-2 dB gelten folgende Bewertungsstufen:
 
 | RMS-Pegel | Sprachbewertung |
 |-----------|-----------------|
-| Unter -30 dBFS | Deutlich zu leise |
-| -30 bis unter -23 dBFS | Etwas zu leise |
-| -23 bis -17 dBFS | Optimal |
-| Über -17 bis -14 dBFS | Etwas zu laut |
-| Über -14 dBFS | Deutlich zu laut |
+| Unter -29 dBFS | Deutlich zu leise |
+| -29 bis unter -22 dBFS | Etwas zu leise |
+| -22 bis -18 dBFS | Optimal |
+| Über -18 bis -15 dBFS | Etwas zu laut |
+| Über -15 dBFS | Deutlich zu laut |
 
 Die Grenzwerte sind Empfehlungen für dieses AudioCheck-System
 und keine allgemeingültige Funknorm.
@@ -157,7 +157,7 @@ Datei: `/etc/svxlink/svxlink.d/ModuleParrot.conf`
 ```ini
 AUDIOCHECK=1
 AUDIOCHECK_TARGET_RMS=-20
-AUDIOCHECK_TOLERANCE=3
+AUDIOCHECK_TOLERANCE=2
 AUDIOCHECK_PEAK_LIMIT=-6
 AUDIOCHECK_MIN_DURATION=2000
 ```

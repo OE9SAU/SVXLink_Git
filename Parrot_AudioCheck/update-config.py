@@ -15,7 +15,7 @@ text = source.read_text(encoding="utf-8")
 defaults = {
     "AUDIOCHECK": "1",
     "AUDIOCHECK_TARGET_RMS": "-20",
-    "AUDIOCHECK_TOLERANCE": "3",
+    "AUDIOCHECK_TOLERANCE": "2",
     "AUDIOCHECK_PEAK_LIMIT": "-6",
     "AUDIOCHECK_MIN_DURATION": "2000",
 }
