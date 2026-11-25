@@ -28,7 +28,7 @@ Messung nicht erforderlich.
 - Rollback-Funktion
 - Update von AudioCheck V1.0 und V1.01
 
-## Kompatibilität
+## Kompatibilität prüfen
 
 Das mitgelieferte Binärmodul ist vorgesehen für:
 
@@ -39,6 +39,27 @@ Das mitgelieferte Binärmodul ist vorgesehen für:
 
 Andere SVXLink-Versionen und Architekturen werden
 vom Installer nicht unterstützt.
+
+```bash
+echo "=== SVXLink-Version ==="
+svxlink --version
+
+echo ""
+echo "=== Architektur ==="
+dpkg --print-architecture
+
+echo ""
+echo "=== Betriebssystem ==="
+cat /etc/os-release
+
+echo ""
+echo "=== Parrot-Modul SHA256 ==="
+sha256sum /usr/lib/arm-linux-gnueabihf/svxlink/ModuleParrot.so
+
+echo ""
+echo "=== SVXLink-Dienstzustand ==="
+systemctl is-active svxlink
+```
 
 ## Installation
 
