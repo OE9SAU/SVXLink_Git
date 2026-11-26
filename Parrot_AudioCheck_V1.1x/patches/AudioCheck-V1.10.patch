@@ -1,0 +1,364 @@
+diff --git a/src/svxlink/modules/parrot/ModuleParrot.cpp b/src/svxlink/modules/parrot/ModuleParrot.cpp
+index b11cabd9..a0305722 100644
+--- a/src/svxlink/modules/parrot/ModuleParrot.cpp
++++ b/src/svxlink/modules/parrot/ModuleParrot.cpp
+@@ -40,6 +40,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ #include <cstdlib>
+ #include <iostream>
+ #include <sstream>
++#include <cmath>
++#include <iomanip>
+ 
+ 
+ /****************************************************************************
+@@ -96,6 +98,18 @@ class ModuleParrot::FifoAdapter : public AudioPassthrough
+   public:
+     FifoAdapter(ModuleParrot *parrot) : parrot(parrot) {}
+     
++    virtual int writeSamples(const float *samples, int count) override
++    {
++      int written = sinkWriteSamples(samples, count);
++
++      if (written > 0)
++      {
++        parrot->measureAudioSamples(samples, written);
++      }
++
++      return written;
++    }
++
+     virtual void flushSamples(void)
+     {
+       sourceAllSamplesFlushed();
+@@ -201,6 +215,59 @@ bool ModuleParrot::initialize(void)
+     repeat_delay_timer.setTimeout(repeat_delay);
+   }
+   
++  // Parrot AudioCheck V1.10
++  cfg().getValue(cfgName(), "AUDIOCHECK", audio_check_enabled);
++  cfg().getValue(cfgName(), "AUDIOCHECK_TARGET_RMS",
++                 audio_check_target_rms);
++  cfg().getValue(cfgName(), "AUDIOCHECK_TOLERANCE",
++                 audio_check_tolerance);
++  cfg().getValue(cfgName(), "AUDIOCHECK_PEAK_LIMIT",
++                 audio_check_peak_limit);
++  cfg().getValue(cfgName(), "AUDIOCHECK_MIN_DURATION",
++                 audio_check_min_duration);
++
++  if (!std::isfinite(audio_check_target_rms) ||
++      audio_check_target_rms < -60.0 ||
++      audio_check_target_rms > 0.0)
++  {
++    audio_check_target_rms = -20.0;
++  }
++
++  if (!std::isfinite(audio_check_tolerance) ||
++      audio_check_tolerance <= 0.0 ||
++      audio_check_tolerance > 12.0)
++  {
++    audio_check_tolerance = 3.0;
++  }
++
++  if (!std::isfinite(audio_check_peak_limit) ||
++      audio_check_peak_limit < -60.0 ||
++      audio_check_peak_limit > 0.0)
++  {
++    audio_check_peak_limit = -6.0;
++  }
++
++  if (audio_check_min_duration < 100 ||
++      audio_check_min_duration > 60000)
++  {
++    audio_check_min_duration = 2000;
++  }
++
++  if (audio_check_enabled)
++  {
++    cout << "Parrot: AudioCheck V1.10 initialisiert" << endl;
++    cout << "Parrot: RMS-Zielpegel: "
++         << audio_check_target_rms << " dBFS" << endl;
++    cout << "Parrot: RMS-Toleranz: +/-"
++         << audio_check_tolerance << " dB" << endl;
++    cout << "Parrot: Spitzenpegelgrenze: "
++         << audio_check_peak_limit << " dBFS" << endl;
++    cout << "Parrot: Abtastrate: "
++         << INTERNAL_SAMPLE_RATE << " Hz" << endl;
++    cout << "Parrot: Mindestmessdauer: "
++         << audio_check_min_duration << " ms" << endl;
++  }
++
+   adapter = new FifoAdapter(this);
+   AudioSink::setHandler(adapter);
+   
+@@ -288,6 +355,7 @@ void ModuleParrot::logicIdleStateChanged(bool is_idle)
+  */
+ void ModuleParrot::activateInit(void)
+ {
++  resetAudioCheck();
+   fifo->clear();
+   cmd_queue.clear();
+   valve->setOpen(false);  
+@@ -309,6 +377,8 @@ void ModuleParrot::activateInit(void)
+  */
+ void ModuleParrot::deactivateCleanup(void)
+ {
++  resetAudioCheck();
++  audio_check_playback = true;
+   valve->setOpen(true);
+   fifo->clear();
+   repeat_delay_timer.setEnable(false);
+@@ -390,12 +460,26 @@ void ModuleParrot::allSamplesWritten(void)
+   valve->setOpen(false);
+ 
+   processEvent("all_played");
++
++  if (audio_check_enabled && isActive() &&
++      audio_result_pending)
++  {
++    reportAudioCheck();
++    resetAudioCheck();
++  }
+ } /* ModuleParrot::allSamplesWritten */
+ 
+ 
+ void ModuleParrot::onRepeatDelayExpired(void)
+ {
+   repeat_delay_timer.setEnable(false);
++
++  if (audio_check_enabled && !audio_check_playback)
++  {
++    finalizeAudioCheck();
++    audio_check_playback = true;
++  }
++
+   valve->setOpen(true);
+ } /* ModuleParrot::onRepeatDelayExpired */
+ 
+@@ -438,3 +522,182 @@ void ModuleParrot::execCmdQueue(void)
+ /*
+  * This file has not been truncated
+  */
++
++
++/****************************************************************************
++ *
++ * Parrot AudioCheck V1.10
++ *
++ ****************************************************************************/
++
++void ModuleParrot::resetAudioCheck(void)
++{
++  audio_sum_squares = 0.0;
++  audio_peak = 0.0;
++  audio_sample_count = 0;
++  audio_check_invalid = false;
++  audio_check_playback = false;
++
++  audio_result_pending = false;
++  audio_result_valid = false;
++  audio_result_rms = -120.0;
++  audio_result_peak = -120.0;
++  audio_result_duration = 0.0;
++}
++
++
++void ModuleParrot::measureAudioSamples(
++    const float *samples, int count)
++{
++  if (!audio_check_enabled ||
++      !isActive() ||
++      audio_check_playback)
++  {
++    return;
++  }
++
++  for (int i = 0; i < count; ++i)
++  {
++    const double sample = samples[i];
++
++    if (!std::isfinite(sample))
++    {
++      audio_check_invalid = true;
++      continue;
++    }
++
++    audio_sum_squares += sample * sample;
++
++    const double amplitude = std::fabs(sample);
++
++    if (amplitude > audio_peak)
++    {
++      audio_peak = amplitude;
++    }
++
++    ++audio_sample_count;
++  }
++}
++
++
++void ModuleParrot::finalizeAudioCheck(void)
++{
++  audio_result_pending = true;
++  audio_result_valid = false;
++
++  audio_result_duration =
++      static_cast<double>(audio_sample_count) /
++      INTERNAL_SAMPLE_RATE;
++
++  if (audio_sample_count == 0 ||
++      audio_check_invalid ||
++      audio_result_duration * 1000.0 <
++          audio_check_min_duration)
++  {
++    return;
++  }
++
++  if (audio_sum_squares <= 0.0 || audio_peak <= 0.0)
++  {
++    return;
++  }
++
++  audio_result_rms = 10.0 * std::log10(
++      audio_sum_squares /
++      static_cast<double>(audio_sample_count));
++
++  audio_result_peak = 20.0 * std::log10(audio_peak);
++
++  audio_result_valid =
++      std::isfinite(audio_result_rms) &&
++      std::isfinite(audio_result_peak);
++}
++
++
++void ModuleParrot::reportAudioCheck(void)
++{
++  if (!audio_result_pending)
++  {
++    return;
++  }
++
++  audio_result_pending = false;
++
++  if (!audio_result_valid)
++  {
++    cout << "Parrot: AudioCheck V1.10: Messung ungültig oder zu kurz"
++         << endl;
++
++    processEvent("audiocheck_invalid");
++    return;
++  }
++
++  const double lower =
++      audio_check_target_rms - audio_check_tolerance;
++
++  const double upper =
++      audio_check_target_rms + audio_check_tolerance;
++
++  const char *result;
++
++  if (audio_result_rms < lower - 7.0)
++  {
++    result = "VERY_LOW";
++  }
++  else if (audio_result_rms < lower)
++  {
++    result = "LOW";
++  }
++  else if (audio_result_rms <= upper)
++  {
++    result = "OPTIMAL";
++  }
++  else if (audio_result_rms <= upper + 3.0)
++  {
++    result = "HIGH";
++  }
++  else
++  {
++    result = "VERY_HIGH";
++  }
++
++  const bool peak_warning =
++      audio_result_peak > audio_check_peak_limit;
++
++
++  const char *bewertung = "Unbekannt";
++
++  if (std::string(result) == "VERY_LOW")
++    bewertung = "Deutlich zu leise";
++  else if (std::string(result) == "LOW")
++    bewertung = "Etwas zu leise";
++  else if (std::string(result) == "OPTIMAL")
++    bewertung = "Optimal";
++  else if (std::string(result) == "HIGH")
++    bewertung = "Etwas zu laut";
++  else if (std::string(result) == "VERY_HIGH")
++    bewertung = "Deutlich zu laut";
++
++  std::ostringstream log;
++
++  log << std::fixed << std::setprecision(2)
++      << "Parrot: AudioCheck V1.10: RMS="
++      << audio_result_rms << " dBFS, Peak="
++      << audio_result_peak << " dBFS, Bewertung="
++      << bewertung;
++
++  cout << log.str() << endl;
++
++  std::ostringstream event;
++
++  event << "audiocheck_result "
++        << static_cast<int>(std::round(audio_result_rms))
++        << " "
++        << static_cast<int>(std::round(audio_result_peak))
++        << " "
++        << result
++        << " "
++        << (peak_warning ? 1 : 0);
++
++  processEvent(event.str());
++}
+diff --git a/src/svxlink/modules/parrot/ModuleParrot.h b/src/svxlink/modules/parrot/ModuleParrot.h
+index 6c331ec0..3a22cac8 100644
+--- a/src/svxlink/modules/parrot/ModuleParrot.h
++++ b/src/svxlink/modules/parrot/ModuleParrot.h
+@@ -41,6 +41,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ 
+ #include <string>
+ #include <list>
++#include <cstdint>
+ 
+ 
+ /****************************************************************************
+@@ -151,6 +152,32 @@ class ModuleParrot : public Module
+     Async::Timer      	    repeat_delay_timer;
+     std::list<std::string>  cmd_queue;
+     
++    // Parrot AudioCheck V1.10
++    bool audio_check_enabled = false;
++    double audio_check_target_rms = -20.0;
++    double audio_check_tolerance = 3.0;
++    double audio_check_peak_limit = -6.0;
++    int audio_check_min_duration = 2000;
++
++    // Audio measurement
++    double audio_sum_squares = 0.0;
++    double audio_peak = 0.0;
++    std::uint64_t audio_sample_count = 0;
++    bool audio_check_invalid = false;
++    bool audio_check_playback = false;
++
++    // Stored measurement result
++    bool audio_result_pending = false;
++    bool audio_result_valid = false;
++    double audio_result_rms = -120.0;
++    double audio_result_peak = -120.0;
++    double audio_result_duration = 0.0;
++
++    void resetAudioCheck(void);
++    void measureAudioSamples(const float *samples, int count);
++    void finalizeAudioCheck(void);
++    void reportAudioCheck(void);
++
+     void activateInit(void);
+     void deactivateCleanup(void);
+     bool dtmfDigitReceived(char digit, int duration);
