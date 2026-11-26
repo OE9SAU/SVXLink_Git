@@ -36,6 +36,14 @@ Messung nicht erforderlich.
 - Übernahme bekannter AudioCheck-TCL-Erweiterungen
 - Erhaltung bestehender AudioCheck-Konfigurationswerte
 
+## Download
+
+```bash
+clear
+git clone https://github.com/OE9SAU/SVXLink_Git.git
+cd SVXLink_Git/Parrot_AudioCheck_V1.1x
+```
+
 ## Kompatibilität prüfen
 
 Das mitgelieferte Binärmodul ist vorgesehen für:
