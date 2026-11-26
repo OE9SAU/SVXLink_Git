@@ -40,7 +40,7 @@ end = sections[i + 1].start() if i + 1 < len(sections) else len(text)
 body = text[start:end]
 
 body = re.sub(
-    r"(?m)^# Parrot AudioCheck V[^\r\n]*$",
+    r"(?m)^# (?:Parrot )?AudioCheck V[^\r\n]*$",
     "# Parrot AudioCheck V1.02",
     body
 )
